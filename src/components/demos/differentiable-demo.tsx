@@ -302,7 +302,6 @@ export function DifferentiableDemo() {
                   dataKey="layer" 
                   type="category" 
                   stroke="#94A3B8"
-                  dataKey="layer"
                   domain={['Input→Hidden', 'Hidden→Output']}
                 />
                 <ZAxis dataKey="weight" range={[-1, 1]} />
@@ -313,23 +312,12 @@ export function DifferentiableDemo() {
                     borderRadius: '8px'
                   }}
                   labelStyle={{ color: '#F8FAFC' }}
-                  formatter={(value: number, name: string) => [
-                    value.toFixed(3), 
-                    name === 'weight' ? 'Weight' : name
-                  ]}
                 />
                 <Scatter 
                   data={generateWeightData()} 
-                  fill="#00D4FF"
+                  fill="#0891B2"
                   shape="circle"
-                >
-                  {generateWeightData().map((entry, index) => (
-                    <cell 
-                      key={`cell-${index}`} 
-                      fill={entry.weight > 0 ? '#00D4FF' : '#8B5CF6'} 
-                    />
-                  ))}
-                </Scatter>
+                />
               </ScatterChart>
             </ResponsiveContainer>
           </div>

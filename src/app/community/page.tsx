@@ -2,11 +2,11 @@ import { Container } from '@/components/ui/container';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Github, Discord, Twitter, BookOpen, MessageSquare, Users } from 'lucide-react';
+import { Github, MessageCircle, Twitter, BookOpen, MessageSquare, Users } from 'lucide-react';
 
 const communityChannels = [
   {
-    icon: Discord,
+    icon: MessageCircle,
     title: 'Discord Server',
     description: 'Join our active community on Discord. Get help, share your projects, and connect with other Fortran² developers.',
     stats: '2.5k+ members',

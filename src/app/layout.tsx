@@ -32,7 +32,6 @@ export const metadata: Metadata = {
   description: 'Fortran² is a cutting-edge multi-paradigm programming language for computational science, featuring advanced arithmetic, differentiable programming, symbolic computation, and probabilistic programming.',
   keywords: ['Fortran', 'programming language', 'computational science', 'high performance computing', 'scientific computing', 'numerical computing'],
   authors: [{ name: 'Fortran² Team' }],
-  canonical: 'https://fortran2.io',
   openGraph: {
     type: 'website',
     locale: 'en_US',

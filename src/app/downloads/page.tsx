@@ -2,7 +2,7 @@ import { Container } from '@/components/ui/container';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Download, Github, Apple, Linux, Windows } from 'lucide-react';
+import { Download, Github, Smartphone, Monitor, Server } from 'lucide-react';
 
 const releases = [
   {
@@ -16,10 +16,10 @@ const releases = [
       'Full macOS ARM support',
     ],
     downloads: [
-      { platform: 'Windows x64', size: '45.2 MB', icon: Windows },
-      { platform: 'macOS ARM', size: '38.1 MB', icon: Apple },
-      { platform: 'macOS Intel', size: '42.3 MB', icon: Apple },
-      { platform: 'Linux x64', size: '41.8 MB', icon: Linux },
+      { platform: 'Windows x64', size: '45.2 MB', icon: Monitor },
+      { platform: 'macOS ARM', size: '38.1 MB', icon: Smartphone },
+      { platform: 'macOS Intel', size: '42.3 MB', icon: Smartphone },
+      { platform: 'Linux x64', size: '41.8 MB', icon: Server },
     ],
   },
   {
@@ -32,9 +32,9 @@ const releases = [
       'New standard library functions',
     ],
     downloads: [
-      { platform: 'Windows x64', size: '44.8 MB', icon: Windows },
-      { platform: 'macOS ARM', size: '37.9 MB', icon: Apple },
-      { platform: 'Linux x64', size: '41.5 MB', icon: Linux },
+      { platform: 'Windows x64', size: '44.8 MB', icon: Monitor },
+      { platform: 'macOS ARM', size: '37.9 MB', icon: Smartphone },
+      { platform: 'Linux x64', size: '41.5 MB', icon: Server },
     ],
   },
 ];
