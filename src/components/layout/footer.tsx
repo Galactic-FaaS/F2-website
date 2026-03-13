@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
-import { Github, Discord, Twitter, Linkedin } from 'lucide-react';
+import { Github, MessageCircle, Twitter, Linkedin } from 'lucide-react';
 
 const footerLinks = {
   product: {
@@ -42,7 +42,7 @@ const footerLinks = {
 
 const socialLinks = [
   { name: 'GitHub', icon: Github, href: 'https://github.com/fortran-lang' },
-  { name: 'Discord', icon: Discord, href: '/community/discord' },
+  { name: 'Discord', icon: MessageCircle, href: '/community/discord' },
   { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/fortranlang' },
   { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/fortran' },
 ];

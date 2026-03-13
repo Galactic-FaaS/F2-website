@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/providers/theme-provider';
-import { X, Sun, Moon, Search, Github, Discord } from 'lucide-react';
+import { X, Sun, Moon, Search, Github, MessageCircle } from 'lucide-react';
 
 interface MobileNavProps {
   open: boolean;
@@ -92,7 +92,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             GitHub
           </Button>
           <Button variant="secondary" className="w-full justify-start gap-3">
-            <Discord className="h-4 w-4" />
+            <MessageCircle className="h-4 w-4" />
             Discord
           </Button>
           <Button
