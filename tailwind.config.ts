@@ -13,7 +13,7 @@ const config: Config = {
       colors: {
         brand: {
           cyan: {
-            DEFAULT: '#00D4FF',
+            DEFAULT: '#0891B2',
             dark: '#0891B2',
             light: '#67E8F9',
           },
@@ -116,21 +116,21 @@ const config: Config = {
       
       // Box shadows
       boxShadow: {
-        'glow-sm': '0 0 20px rgba(0, 212, 255, 0.2)',
-        'glow-md': '0 0 30px rgba(0, 212, 255, 0.3)',
-        'glow-lg': '0 0 50px rgba(0, 212, 255, 0.4)',
+        'glow-sm': '0 0 20px rgba(8, 145, 178, 0.2)',
+        'glow-md': '0 0 30px rgba(8, 145, 178, 0.3)',
+        'glow-lg': '0 0 50px rgba(8, 145, 178, 0.4)',
         'glow-purple': '0 0 30px rgba(139, 92, 246, 0.3)',
         'glow-green': '0 0 30px rgba(16, 185, 129, 0.3)',
-        'inner-glow': 'inset 0 0 20px rgba(0, 212, 255, 0.1)',
+        'inner-glow': 'inset 0 0 20px rgba(8, 145, 178, 0.1)',
       },
       
       // Background images
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-mesh': 'radial-gradient(at 40% 20%, rgba(0, 212, 255, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%)',
-        'gradient-accent': 'linear-gradient(135deg, #00D4FF 0%, #8B5CF6 50%, #10B981 100%)',
-        'gradient-text': 'linear-gradient(135deg, #00D4FF 0%, #8B5CF6 100%)',
-        'hero-glow': 'radial-gradient(ellipse at center, rgba(0, 212, 255, 0.15) 0%, transparent 70%)',
+        'gradient-mesh': 'radial-gradient(at 40% 20%, rgba(8, 145, 178, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%)',
+        'gradient-accent': 'linear-gradient(135deg, #0891B2 0%, #8B5CF6 50%, #10B981 100%)',
+        'gradient-text': 'linear-gradient(135deg, #0891B2 0%, #8B5CF6 100%)',
+        'hero-glow': 'radial-gradient(ellipse at center, rgba(8, 145, 178, 0.15) 0%, transparent 70%)',
       },
       
       // Animation
@@ -167,8 +167,8 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(0, 212, 255, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(0, 212, 255, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 20px rgba(8, 145, 178, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(8, 145, 178, 0.6)' },
         },
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },

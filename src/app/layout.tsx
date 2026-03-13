@@ -24,6 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fortran2.io'),
   title: {
     default: 'Fortran² - Next-Generation Programming Language',
     template: '%s | Fortran²',
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
   description: 'Fortran² is a cutting-edge multi-paradigm programming language for computational science, featuring advanced arithmetic, differentiable programming, symbolic computation, and probabilistic programming.',
   keywords: ['Fortran', 'programming language', 'computational science', 'high performance computing', 'scientific computing', 'numerical computing'],
   authors: [{ name: 'Fortran² Team' }],
+  canonical: 'https://fortran2.io',
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -64,6 +66,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Fortran²',
+    applicationCategory: 'DeveloperApplication',
+    operatingSystem: 'Cross-platform',
+    description: 'A cutting-edge multi-paradigm programming language for computational science and high-performance computing.',
+    url: 'https://fortran2.io',
+    author: {
+      '@type': 'Organization',
+      name: 'Fortran² Team',
+      url: 'https://fortran2.io',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    softwareVersion: '3.0',
+    releaseNotes: 'https://fortran2.io/blog/fortran2-v3-release',
+  };
+
   return (
     <html
       lang="en"
@@ -74,12 +98,22 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#0A0E17" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-screen bg-deep-space font-body text-content-dark-primary antialiased">
         <ThemeProvider>
+          <a
+            href="#main-content"
+            className="absolute left-0 top-0 z-50 -translate-y-full bg-brand-cyan px-4 py-2 text-sm font-medium text-white transition-transform focus:translate-y-0"
+          >
+            Skip to main content
+          </a>
           <div className="flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1 pt-16">
+            <main id="main-content" className="flex-1 pt-16">
               {children}
             </main>
             <Footer />

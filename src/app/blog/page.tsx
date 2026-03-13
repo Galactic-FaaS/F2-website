@@ -114,9 +114,14 @@ export default function BlogPage() {
                 Get the latest updates, tutorials, and release announcements delivered to your inbox.
               </p>
               <form className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email address
+                </label>
                 <input
+                  id="newsletter-email"
                   type="email"
                   placeholder="Enter your email"
+                  aria-label="Email address"
                   className="flex-1 rounded-lg border border-border-dark bg-surface-dark-secondary px-4 py-2.5 text-content-dark-primary placeholder:text-content-dark-tertiary focus:outline-none focus:ring-2 focus:ring-brand-cyan/20 focus:border-brand-cyan"
                 />
                 <Button type="submit">Subscribe</Button>
