@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Container } from '@/components/ui/container';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -47,6 +48,22 @@ const contributionAreas = [
   { title: 'Testing', description: 'Write tests and improve test coverage' },
   { title: 'Website', description: 'Help improve this website' },
 ];
+
+export const metadata: Metadata = {
+  title: 'Community - Join the Fortran² Community',
+  description: 'Join the Fortran² community! Connect with developers on Discord, GitHub, Discourse, and Twitter. Contribute to the project or get help.',
+  openGraph: {
+    title: 'Community - Join the Fortran² Community',
+    description: 'Join the Fortran² community and connect with developers worldwide.',
+    url: 'https://fortran2.io/community',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Community - Fortran²',
+    description: 'Join the Fortran² community and connect with developers worldwide.',
+  },
+};
 
 export default function CommunityPage() {
   return (

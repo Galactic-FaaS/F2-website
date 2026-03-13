@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
@@ -276,6 +277,34 @@ Congratulations! You've built your first scientific simulation. Continue explori
     ],
   },
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const tutorial = tutorials[slug];
+  
+  if (!tutorial) {
+    return {
+      title: 'Tutorial Not Found',
+    };
+  }
+
+  return {
+    title: `${tutorial.title} - Fortran² Tutorial`,
+    description: tutorial.description,
+    openGraph: {
+      title: `${tutorial.title} - Fortran² Tutorial`,
+      description: tutorial.description,
+      url: `https://fortran2.io/tutorials/${slug}`,
+      siteName: 'Fortran²',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tutorial.title} - Fortran² Tutorial`,
+      description: tutorial.description,
+    },
+  };
+}
 
 export function generateStaticParams() {
   return Object.keys(tutorials).map((slug) => ({ slug }));

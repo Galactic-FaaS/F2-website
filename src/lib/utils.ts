@@ -64,3 +64,32 @@ export function debounce<T extends (...args: Parameters<T>) => void>(
     timeout = setTimeout(() => func(...args), wait);
   };
 }
+
+/**
+ * Sanitize HTML to prevent XSS attacks
+ * Only allows safe tags and attributes
+ */
+export function sanitizeHtml(unsafeHtml: string): string {
+  // Allow only safe tags
+  const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'code', 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td'];
+  const allowedAttributes: Record<string, string[]> = {
+    'a': ['href', 'title'],
+    'code': ['class'],
+  };
+
+  // First escape HTML entities
+  let safe = unsafeHtml
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+  // Then selectively allow certain tags by unescaping them
+  // This is a simple approach - for production, use a library like DOMPurify
+  safe = safe
+    .replace(/&lt;(\/?(?:strong|b|em|i|code|p|br))(&gt;|>)/gi, '<$1>')
+    .replace(/&lt;code class="([^"]*)"&gt;([^&]*)&lt;\/code&gt;/gi, '<code class="$1">$2</code>');
+
+  return safe;
+}

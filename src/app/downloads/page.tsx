@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Container } from '@/components/ui/container';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -44,6 +45,22 @@ const typeColors = {
   beta: 'warning',
   nightly: 'error',
 } as const;
+
+export const metadata: Metadata = {
+  title: 'Download Fortran² - Get Started',
+  description: 'Download Fortran² for Windows, macOS, and Linux. Choose from stable releases, beta versions, or nightly builds. MIT licensed open source.',
+  openGraph: {
+    title: 'Download Fortran² - Get Started',
+    description: 'Download Fortran² for Windows, macOS, and Linux. MIT licensed open source.',
+    url: 'https://fortran2.io/downloads',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Download Fortran²',
+    description: 'Download Fortran² for Windows, macOS, and Linux.',
+  },
+};
 
 export default function DownloadsPage() {
   return (

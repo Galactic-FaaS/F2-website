@@ -27,9 +27,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             type={type}
+            id={props.id || props.name}
+            aria-label={props['aria-label'] || label}
+            aria-describedby={error ? `${props.id || props.name}-error` : undefined}
             className={cn(
               'w-full rounded-lg border bg-surface-dark-secondary px-4 py-2.5 text-content-dark-primary placeholder:text-content-dark-tertiary transition-all duration-150',
               'focus:outline-none focus:ring-2 focus:ring-brand-cyan/20 focus:border-brand-cyan',
+              'disabled:opacity-50 disabled:cursor-not-allowed',
               error && 'border-red-500 focus:ring-red-500/20 focus:border-red-500',
               leftElement && 'pl-10',
               rightElement && 'pr-10',

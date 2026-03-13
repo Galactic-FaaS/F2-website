@@ -1,5 +1,4 @@
-'use client';
-
+import type { Metadata } from 'next';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
@@ -80,6 +79,22 @@ const demoInfo = {
       'Training visualization'
     ]
   }
+};
+
+export const metadata: Metadata = {
+  title: 'Demos - Interactive Fortran² Examples',
+  description: 'Try interactive demos showcasing Fortran² capabilities in arithmetic, symbolic computation, probabilistic programming, and differentiable programming.',
+  openGraph: {
+    title: 'Demos - Interactive Fortran² Examples',
+    description: 'Try interactive demos showcasing Fortran² capabilities.',
+    url: 'https://fortran2.io/demos',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Demos - Fortran²',
+    description: 'Try interactive demos showcasing Fortran² capabilities.',
+  },
 };
 
 export default function DemosPage() {

@@ -87,6 +87,25 @@ export default function RootLayout({
     releaseNotes: 'https://fortran2.io/blog/fortran2-v3-release',
   };
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://fortran2.io/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Documentation',
+        item: 'https://fortran2.io/docs',
+      },
+    ],
+  };
+
   return (
     <html
       lang="en"

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { Header } from '@/components/layout/header';
@@ -44,6 +45,22 @@ const levelColors: Record<string, string> = {
   Beginner: 'bg-green-500/10 text-green-400 border-green-500/20',
   Intermediate: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
   Advanced: 'bg-red-500/10 text-red-400 border-red-500/20',
+};
+
+export const metadata: Metadata = {
+  title: 'Tutorials - Learn Fortran²',
+  description: 'Step-by-step tutorials to help you learn Fortran² from scratch. Build your first simulation, explore differentiable programming, and more.',
+  openGraph: {
+    title: 'Tutorials - Learn Fortran²',
+    description: 'Step-by-step tutorials to help you learn Fortran² from scratch.',
+    url: 'https://fortran2.io/tutorials',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tutorials - Fortran²',
+    description: 'Step-by-step tutorials to help you learn Fortran².',
+  },
 };
 
 export default function TutorialsPage() {

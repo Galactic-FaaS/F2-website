@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { Card, CardContent } from '@/components/ui/card';
@@ -76,6 +77,22 @@ const colorClasses = {
     bg: 'bg-amber-500/10',
     text: 'text-amber-500',
     border: 'border-amber-500/30',
+  },
+};
+
+export const metadata: Metadata = {
+  title: 'Features - Fortran² Programming Language',
+  description: 'Discover Fortran² powerful features including advanced arithmetic, differentiable programming, symbolic computation, and probabilistic programming for computational science.',
+  openGraph: {
+    title: 'Features - Fortran² Programming Language',
+    description: 'Discover Fortran² powerful features including advanced arithmetic, differentiable programming, symbolic computation, and probabilistic programming.',
+    url: 'https://fortran2.io/features',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Features - Fortran² Programming Language',
+    description: 'Discover Fortran² powerful features for computational science.',
   },
 };
 

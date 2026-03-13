@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { Header } from '@/components/layout/header';
@@ -45,6 +46,22 @@ const blogPosts: BlogPost[] = [
     readTime: '6 min read',
   },
 ];
+
+export const metadata: Metadata = {
+  title: 'Blog - Fortran² News and Tutorials',
+  description: 'Read the latest news, tutorials, and insights about Fortran². Stay updated with release announcements, performance benchmarks, and how-to guides.',
+  openGraph: {
+    title: 'Blog - Fortran² News and Tutorials',
+    description: 'Read the latest news, tutorials, and insights about Fortran².',
+    url: 'https://fortran2.io/blog',
+    siteName: 'Fortran²',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog - Fortran²',
+    description: 'Read the latest news, tutorials, and insights about Fortran².',
+  },
+};
 
 export default function BlogPage() {
   return (
