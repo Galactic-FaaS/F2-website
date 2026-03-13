@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
@@ -81,23 +82,7 @@ const demoInfo = {
   }
 };
 
-export const metadata: Metadata = {
-  title: 'Demos - Interactive Fortran² Examples',
-  description: 'Try interactive demos showcasing Fortran² capabilities in arithmetic, symbolic computation, probabilistic programming, and differentiable programming.',
-  openGraph: {
-    title: 'Demos - Interactive Fortran² Examples',
-    description: 'Try interactive demos showcasing Fortran² capabilities.',
-    url: 'https://fortran2.io/demos',
-    siteName: 'Fortran²',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Demos - Fortran²',
-    description: 'Try interactive demos showcasing Fortran² capabilities.',
-  },
-};
-
-export default function DemosPage() {
+function DemosContent() {
   const [activeDemo, setActiveDemo] = useState<DemoType | null>(null);
 
   const demos = Object.values(demoInfo);
@@ -233,4 +218,8 @@ export default function DemosPage() {
       )}
     </div>
   );
+}
+
+export default function DemosPage() {
+  return <DemosContent />;
 }
