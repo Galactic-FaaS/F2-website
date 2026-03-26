@@ -7,6 +7,7 @@ const footerLinks = {
     title: 'Product',
     links: [
       { name: 'Features', href: '/features' },
+      { name: 'Playground', href: '/playground' },
       { name: 'Downloads', href: '/downloads' },
       { name: 'Documentation', href: '/docs' },
       { name: 'Changelog', href: '/changelog' },

@@ -14,6 +14,7 @@ import { MobileNav } from './mobile-nav';
 
 const navigation = [
   { name: 'Features', href: '/features' },
+  { name: 'Playground', href: '/playground' },
   { name: 'Documentation', href: '/docs' },
   { name: 'Downloads', href: '/downloads' },
   { name: 'Community', href: '/community' },
