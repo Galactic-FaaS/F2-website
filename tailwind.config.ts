@@ -9,195 +9,294 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
-      // Brand colors
+      /* ========================================
+       * CARBON DESIGN SYSTEM - COLOR TOKENS
+       * ======================================== */
       colors: {
-        brand: {
-          cyan: {
-            DEFAULT: '#0891B2',
-            dark: '#0891B2',
-            light: '#67E8F9',
+        // Carbon Blue Scale - Primary interactive colors
+        carbon: {
+          blue: {
+            10: '#EDF5FF',
+            20: '#D0E2FF',
+            30: '#A6C8FF',
+            40: '#78A9FF',
+            50: '#4C8BF5',
+            60: '#0f62fe',  // Primary interactive color
+            70: '#0043ce',  // Primary hover state
+            80: '#00308A',
+            90: '#001D6C',
+            100: '#001141',
           },
-          purple: {
-            DEFAULT: '#8B5CF6',
-            dark: '#7C3AED',
-            light: '#A78BFA',
-          },
-          green: {
-            DEFAULT: '#10B981',
-            dark: '#059669',
-            light: '#34D399',
-          },
-        },
-        // Surface colors - Dark mode
-        surface: {
-          dark: {
-            primary: '#0A0E17',
-            secondary: '#111827',
-            tertiary: '#1E293B',
-            elevated: '#1E293B',
-          },
-          light: {
-            primary: '#FFFFFF',
-            secondary: '#F8FAFC',
-            tertiary: '#F1F5F9',
-            elevated: '#FFFFFF',
+          gray: {
+            10: '#F4F4F4',   // Light background alternative
+            20: '#E0E0E0',   // Primary text on dark
+            30: '#C6C6C6',   // Tertiary text on dark
+            40: '#A8A8A8',   // Secondary text
+            50: '#8D8D8D',   // Placeholder text
+            60: '#6F6F6F',   // Disabled text
+            70: '#525252',   // Subtle borders
+            80: '#393939',   // Tertiary background, hover states
+            90: '#262626',   // Secondary background
+            100: '#161616',  // Deepest background
           },
         },
-        // Border colors
+        
+        // Accent Colors - Fortran² Brand
+        accent: {
+          cyan: '#1192E8',
+          teal: '#00a6a4',   // Selected states, highlights
+          purple: '#8B5CF6', // Secondary accent, gradients
+          green: '#10B981',  // Success states, code highlights
+        },
+        
+        // Status Colors
+        status: {
+          success: '#24A148',
+          'success-bg': 'rgba(36, 161, 72, 0.15)',
+          warning: '#F1C21B',
+          'warning-bg': 'rgba(241, 194, 27, 0.15)',
+          error: '#DA1E28',
+          'error-bg': 'rgba(218, 30, 40, 0.15)',
+          info: '#0f62fe',
+          'info-bg': 'rgba(15, 98, 254, 0.15)',
+        },
+        
+        // Semantic aliases for common use
+        primary: {
+          DEFAULT: '#0f62fe',
+          hover: '#0043ce',
+          active: '#00a6a4',
+        },
+        
+        background: {
+          DEFAULT: '#161616',
+          secondary: '#262626',
+          tertiary: '#393939',
+          overlay: '#0B0B0B',
+        },
+        
+        text: {
+          primary: '#F4F4F4',
+          secondary: '#C6C6C6',
+          tertiary: '#8D8D8D',
+          disabled: '#6F6F6F',
+        },
+        
         border: {
-          dark: {
-            DEFAULT: '#334155',
-            muted: '#1E293B',
-            emphasis: '#475569',
-          },
-          light: {
-            DEFAULT: '#E2E8F0',
-            muted: '#F1F5F9',
-            emphasis: '#CBD5E1',
-          },
+          DEFAULT: '#393939',
+          subtle: '#262626',
+          strong: '#525252',
         },
-        // Content colors - Dark mode
-        content: {
-          dark: {
-            primary: '#F8FAFC',
-            secondary: '#94A3B8',
-            tertiary: '#64748B',
-          },
-          light: {
-            primary: '#0F172A',
-            secondary: '#64748B',
-            tertiary: '#94A3B8',
-          },
-        },
-        // Deep Space background
-        'deep-space': '#0A0E17',
-        'midnight': '#111827',
       },
       
-      // Typography
+      /* ========================================
+       * CARBON TYPOGRAPHY
+       * ======================================== */
       fontFamily: {
-        heading: ['Space Grotesk', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        code: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        sans: ['IBM Plex Sans', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
       },
       
-      // Font sizes (type scale)
+      // Carbon Type Scale
       fontSize: {
-        'display-xl': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],
-        'display-lg': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'display-md': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '700' }],
-        'h1': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
-        'h2': ['2.25rem', { lineHeight: '1.25', letterSpacing: '-0.01em', fontWeight: '700' }],
-        'h3': ['1.875rem', { lineHeight: '1.3', fontWeight: '600' }],
-        'h4': ['1.5rem', { lineHeight: '1.35', fontWeight: '600' }],
-        'h5': ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],
-        'h6': ['1rem', { lineHeight: '1.5', letterSpacing: '0.01em', fontWeight: '600' }],
-        'body-lg': ['1.125rem', { lineHeight: '1.75' }],
-        'body': ['1rem', { lineHeight: '1.6' }],
-        'body-sm': ['0.875rem', { lineHeight: '1.5' }],
-        'body-xs': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.02em' }],
-        'code': ['0.875rem', { lineHeight: '1.7', fontWeight: '400' }],
-        'code-sm': ['0.8125rem', { lineHeight: '1.6', fontWeight: '400' }],
+        // Caption text
+        'carbon-xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0' }],        // 12px
+        // Body text
+        'carbon-sm': ['0.875rem', { lineHeight: '1.43', letterSpacing: '0' }],      // 14px
+        // Card headings
+        'carbon-base': ['1rem', { lineHeight: '1.38', letterSpacing: '0' }],        // 16px
+        // Section headings
+        'carbon-lg': ['1.125rem', { lineHeight: '1.33', letterSpacing: '0' }],      // 18px
+        // Page headings
+        'carbon-xl': ['1.25rem', { lineHeight: '1.4', letterSpacing: '0' }],        // 20px
+        // Major headings
+        'carbon-2xl': ['1.5rem', { lineHeight: '1.33', letterSpacing: '0' }],       // 24px
+        // Hero headings
+        'carbon-3xl': ['1.75rem', { lineHeight: '1.29', letterSpacing: '0' }],      // 28px
+        // Large headings
+        'carbon-4xl': ['2rem', { lineHeight: '1.25', letterSpacing: '0' }],         // 32px
+        // Display styles
+        'carbon-display-01': ['3rem', { lineHeight: '1.17', letterSpacing: '-0.02em', fontWeight: '300' }],      // 48px
+        'carbon-display-02': ['3.375rem', { lineHeight: '1.11', letterSpacing: '-0.02em', fontWeight: '300' }],  // 54px
+        'carbon-display-03': ['3.75rem', { lineHeight: '1.07', letterSpacing: '-0.02em', fontWeight: '300' }],   // 60px
       },
       
-      // Spacing
+      fontWeight: {
+        light: '300',
+        normal: '400',
+        medium: '500',
+        semibold: '600',
+      },
+      
+      /* ========================================
+       * CARBON SPACING SYSTEM (8px base grid)
+       * ======================================== */
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
+        'carbon-01': '0.125rem',  // 2px  - Icon alignment, micro-adjustments
+        'carbon-02': '0.25rem',   // 4px  - Tight spacing, inline elements
+        'carbon-03': '0.5rem',    // 8px  - Base padding, component gaps
+        'carbon-04': '0.75rem',   // 12px - Small padding, icon margins
+        'carbon-05': '1rem',      // 16px - Standard padding, card padding
+        'carbon-06': '1.5rem',    // 24px - Section padding, large gaps
+        'carbon-07': '2rem',      // 32px - Component margins, section spacing
+        'carbon-08': '2.5rem',    // 40px - Large section spacing
+        'carbon-09': '3rem',      // 48px - Page section padding
+        'carbon-10': '4rem',      // 64px - Major section spacing
+        'carbon-11': '5rem',      // 80px - Hero section padding
+        'carbon-12': '6rem',      // 96px - Maximum section spacing
       },
       
-      // Border radius
+      /* ========================================
+       * CARBON BREAKPOINTS
+       * ======================================== */
+      screens: {
+        sm: '320px',    // Small mobile
+        md: '672px',    // Large mobile / Small tablet
+        lg: '1056px',   // Tablet / Small laptop
+        xlg: '1312px',  // Desktop
+        max: '1584px',  // Large desktop
+      },
+      
+      /* ========================================
+       * CARBON BORDER RADIUS (Tile styles)
+       * ======================================== */
       borderRadius: {
-        '4xl': '2rem',
-        '5xl': '2.5rem',
+        'none': '0',
+        'carbon': '2px',      // Default Carbon tile
+        'carbon-lg': '4px',   // Cards, elevated elements
+        'carbon-xl': '8px',   // Terminal, modals
       },
       
-      // Box shadows
+      /* ========================================
+       * CARBON BOX SHADOWS (Elevation tokens)
+       * ======================================== */
       boxShadow: {
-        'glow-sm': '0 0 20px rgba(8, 145, 178, 0.2)',
-        'glow-md': '0 0 30px rgba(8, 145, 178, 0.3)',
-        'glow-lg': '0 0 50px rgba(8, 145, 178, 0.4)',
+        // Carbon elevation shadows
+        'elevation-1': '0 1px 2px rgba(0, 0, 0, 0.3)',
+        'elevation-2': '0 2px 4px rgba(0, 0, 0, 0.3)',
+        'elevation-3': '0 4px 8px rgba(0, 0, 0, 0.3)',
+        // Glow effects
+        'glow-sm': '0 0 20px rgba(15, 98, 254, 0.2)',
+        'glow-md': '0 0 30px rgba(15, 98, 254, 0.3)',
+        'glow-lg': '0 0 50px rgba(15, 98, 254, 0.4)',
+        'glow-cyan': '0 0 30px rgba(17, 146, 232, 0.3)',
+        'glow-teal': '0 0 30px rgba(0, 166, 164, 0.3)',
         'glow-purple': '0 0 30px rgba(139, 92, 246, 0.3)',
         'glow-green': '0 0 30px rgba(16, 185, 129, 0.3)',
-        'inner-glow': 'inset 0 0 20px rgba(8, 145, 178, 0.1)',
       },
       
-      // Background images
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-mesh': 'radial-gradient(at 40% 20%, rgba(8, 145, 178, 0.12) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(16, 185, 129, 0.08) 0px, transparent 50%)',
-        'gradient-accent': 'linear-gradient(135deg, #0891B2 0%, #8B5CF6 50%, #10B981 100%)',
-        'gradient-text': 'linear-gradient(135deg, #0891B2 0%, #8B5CF6 100%)',
-        'hero-glow': 'radial-gradient(ellipse at center, rgba(8, 145, 178, 0.15) 0%, transparent 70%)',
-      },
-      
-      // Animation
+      /* ========================================
+       * CARBON ANIMATIONS
+       * ======================================== */
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-out forwards',
-        'slide-up': 'slideUp 0.3s ease-out forwards',
-        'slide-down': 'slideDown 0.3s ease-out forwards',
-        'scale-in': 'scaleIn 0.2s ease-out forwards',
-        'float': 'float 3s ease-in-out infinite',
+        'fade-in': 'fadeIn 150ms ease-out forwards',
+        'slide-up': 'slideUp 150ms ease-out forwards',
+        'slide-down': 'slideDown 150ms ease-out forwards',
+        'scale-in': 'scaleIn 150ms ease-out forwards',
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
         'shimmer': 'shimmer 2s linear infinite',
+        'float': 'float 3s ease-in-out infinite',
+        'spin': 'spin 0.8s linear infinite',
+        'blink': 'blink 1s step-end infinite',
       },
       
-      // Keyframes
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideDown: {
-          '0%': { opacity: '0', transform: 'translateY(-20px)' },
+          '0%': { opacity: '0', transform: 'translateY(-16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         scaleIn: {
           '0%': { opacity: '0', transform: 'scale(0.95)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(8, 145, 178, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(8, 145, 178, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 20px rgba(15, 98, 254, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(15, 98, 254, 0.6)' },
         },
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
+        },
       },
       
-      // Transition timing
+      /* ========================================
+       * CARBON TRANSITIONS
+       * ======================================== */
+      transitionDuration: {
+        'carbon-fast': '70ms',
+        'carbon-normal': '150ms',
+        'carbon-slow': '300ms',
+      },
+      
       transitionTimingFunction: {
-        'bounce-in': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
-        'smooth': 'cubic-bezier(0.0, 0.0, 0.2, 1)',
+        'carbon': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       
-      // Container
+      /* ========================================
+       * CARBON BACKGROUNDS
+       * ======================================== */
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        // Hero gradient
+        'hero-gradient': 'linear-gradient(135deg, #161616 0%, #1a1a2e 30%, #16213e 60%, #161616 100%)',
+        // Accent gradient
+        'accent-gradient': 'linear-gradient(135deg, #0f62fe 0%, #00a6a4 100%)',
+        // Mesh gradient background
+        'mesh-gradient': 'radial-gradient(at 40% 20%, rgba(15, 98, 254, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(0, 166, 164, 0.1) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(139, 92, 246, 0.08) 0px, transparent 50%), radial-gradient(at 80% 50%, rgba(15, 98, 254, 0.08) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(0, 166, 164, 0.08) 0px, transparent 50%)',
+        // Glow effect
+        'glow-gradient': 'radial-gradient(ellipse at center, rgba(15, 98, 254, 0.2) 0%, transparent 70%)',
+      },
+      
+      /* ========================================
+       * CARBON CONTAINER
+       * ======================================== */
       container: {
         center: true,
         padding: {
-          DEFAULT: '1rem',
-          sm: '1.5rem',
-          lg: '2rem',
-          xl: '2.5rem',
+          DEFAULT: '1rem',    // 16px mobile
+          md: '1.5rem',       // 24px tablet
+          lg: '2rem',         // 32px desktop
         },
         screens: {
-          sm: '640px',
-          md: '768px',
-          lg: '1024px',
-          xl: '1280px',
-          '2xl': '1400px',
+          sm: '320px',
+          md: '672px',
+          lg: '1056px',
+          xlg: '1312px',
+          max: '1584px',
         },
+      },
+      
+      /* ========================================
+       * CARBON Z-INDEX
+       * ======================================== */
+      zIndex: {
+        'dropdown': '1000',
+        'sticky': '1020',
+        'fixed': '1030',
+        'modal-backdrop': '1040',
+        'modal': '1050',
+        'popover': '1060',
+        'tooltip': '1070',
       },
     },
   },

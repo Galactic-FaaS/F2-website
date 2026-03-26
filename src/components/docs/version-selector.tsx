@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, BookOpen, AlertCircle } from 'lucide-react';
+import { ChevronDown, BookOpen, AlertCircle, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Version {
@@ -74,6 +74,15 @@ export function VersionSelector({ currentVersion = 'v3.0', className }: VersionS
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   
+  // Close on escape key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, []);
+  
   // Get current slug path without version
   const getPathForVersion = (versionId: string): string => {
     // Extract the slug portion from current pathname
@@ -88,28 +97,47 @@ export function VersionSelector({ currentVersion = 'v3.0', className }: VersionS
 
   return (
     <div className={cn('relative', className)} ref={dropdownRef}>
+      {/* Trigger button - Carbon styling */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          'flex items-center gap-2 rounded-lg border border-border-dark bg-surface-dark-secondary px-4 py-2 text-sm font-medium text-content-dark-primary transition-all hover:border-border-dark-emphasis hover:bg-surface-dark-tertiary',
-          isOpen && 'border-brand-cyan ring-1 ring-brand-cyan/20'
+          'flex items-center gap-carbon-02',
+          'rounded-carbon border border-carbon-gray-70',
+          'bg-carbon-gray-90 px-carbon-04 py-carbon-02',
+          'text-carbon-xs font-medium text-carbon-gray-10',
+          'transition-all duration-carbon-01',
+          'hover:border-carbon-gray-50 hover:bg-carbon-gray-80',
+          'focus:outline-none focus:ring-2 focus:ring-carbon-blue-50 focus:ring-offset-2 focus:ring-offset-carbon-gray-100',
+          isOpen && 'border-carbon-blue-50 ring-1 ring-carbon-blue-50/20'
         )}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
       >
-        <BookOpen className="h-4 w-4 text-brand-cyan" />
+        <BookOpen className="h-4 w-4 text-accent-cyan" />
         <span>{currentVersionData.label}</span>
         {currentVersionData.isLatest && (
-          <span className="rounded-full bg-brand-cyan/20 px-2 py-0.5 text-xs text-brand-cyan">
+          <span className="rounded-full bg-accent-cyan/20 px-2 py-0.5 text-carbon-xs text-accent-cyan">
             Latest
           </span>
         )}
-        <ChevronDown className={cn('h-4 w-4 text-content-dark-tertiary transition-transform', isOpen && 'rotate-180')} />
+        <ChevronDown className={cn(
+          'h-4 w-4 text-carbon-gray-30 transition-transform duration-carbon-01',
+          isOpen && 'rotate-180'
+        )} />
       </button>
       
+      {/* Dropdown - Carbon styling */}
       {isOpen && (
-        <div className="absolute z-50 mt-2 w-64 rounded-xl border border-border-dark bg-surface-dark-secondary p-2 shadow-lg animate-fade-in">
-          <div className="mb-2 px-3 py-2 text-xs font-semibold text-content-dark-tertiary uppercase tracking-wider">
+        <div className={cn(
+          'absolute z-50 mt-2 w-64',
+          'rounded-carbon-lg border border-carbon-gray-70',
+          'bg-carbon-gray-90 p-carbon-02',
+          'shadow-lg animate-fade-in'
+        )}>
+          <div className={cn(
+            'mb-carbon-02 px-carbon-03 py-carbon-02',
+            'text-carbon-xs font-semibold text-carbon-gray-30 uppercase tracking-wider'
+          )}>
             Select Version
           </div>
           
@@ -121,21 +149,29 @@ export function VersionSelector({ currentVersion = 'v3.0', className }: VersionS
                   href={getPathForVersion(version.id)}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    'flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors',
+                    'flex items-center justify-between rounded-carbon',
+                    'px-carbon-03 py-carbon-02',
+                    'transition-colors duration-carbon-01',
                     isCurrentVersion
-                      ? 'bg-brand-cyan/10 text-brand-cyan'
-                      : 'text-content-dark-secondary hover:bg-surface-dark-tertiary hover:text-content-dark-primary'
+                      ? 'bg-accent-cyan/10 text-accent-cyan'
+                      : 'text-carbon-gray-30 hover:bg-carbon-gray-80 hover:text-carbon-gray-10'
                   )}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{version.label}</span>
+                  <div className="flex items-center gap-carbon-02">
+                    {/* Checkmark indicator for active version */}
+                    {isCurrentVersion && (
+                      <Check className="h-4 w-4 text-accent-cyan" />
+                    )}
+                    <span className={cn('font-medium', !isCurrentVersion && 'ml-6')}>
+                      {version.label}
+                    </span>
                     {version.isLatest && (
-                      <span className="rounded-full bg-brand-cyan/20 px-1.5 py-0.5 text-xs text-brand-cyan">
+                      <span className="rounded-full bg-accent-cyan/20 px-1.5 py-0.5 text-carbon-xs text-accent-cyan">
                         Latest
                       </span>
                     )}
                     {version.isLegacy && (
-                      <span className="rounded-full bg-amber-500/20 px-1.5 py-0.5 text-xs text-amber-500">
+                      <span className="rounded-full bg-carbon-yellow-30/20 px-1.5 py-0.5 text-carbon-xs text-carbon-yellow-30">
                         Legacy
                       </span>
                     )}
@@ -147,26 +183,34 @@ export function VersionSelector({ currentVersion = 'v3.0', className }: VersionS
                   href={version.changelogUrl}
                   onClick={() => setIsOpen(false)}
                   className={cn(
-                    'flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs transition-colors',
+                    'flex items-center gap-1.5 rounded-carbon',
+                    'px-carbon-03 py-carbon-02',
+                    'text-carbon-xs transition-colors duration-carbon-01',
                     isCurrentVersion
-                      ? 'text-brand-cyan/70 hover:text-brand-cyan'
-                      : 'text-content-dark-tertiary hover:text-content-dark-secondary'
+                      ? 'text-accent-cyan/70 hover:text-accent-cyan'
+                      : 'text-carbon-gray-50 hover:text-carbon-gray-30'
                   )}
                 >
                   <AlertCircle className="h-3 w-3" />
                   <span>Changelog • {version.releaseDate}</span>
                 </Link>
                 
-                {!version.isLegacy && <div className="my-1 border-t border-border-dark" />}
+                {!version.isLegacy && <div className="my-1 border-t border-carbon-gray-80" />}
               </div>
             );
           })}
           
-          <div className="mt-2 border-t border-border-dark pt-2">
+          <div className="mt-carbon-02 border-t border-carbon-gray-80 pt-carbon-02">
             <Link
               href="/docs/versions"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-content-dark-tertiary transition-colors hover:text-brand-cyan"
+              className={cn(
+                'flex items-center gap-carbon-02 rounded-carbon',
+                'px-carbon-03 py-carbon-02',
+                'text-carbon-xs text-carbon-gray-30',
+                'transition-colors duration-carbon-01',
+                'hover:text-accent-cyan'
+              )}
             >
               <BookOpen className="h-4 w-4" />
               View All Versions

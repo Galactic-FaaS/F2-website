@@ -19,6 +19,7 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [isExpanded, setIsExpanded] = useState(true);
   
+  // Scroll spy - highlight current section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -60,58 +61,80 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
   
   return (
     <div className={cn('relative', className)}>
-      {/* Toggle for mobile */}
+      {/* Toggle for mobile - Carbon styling */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="mb-3 flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wider text-content-dark-tertiary hover:bg-surface-dark-tertiary md:hidden"
+        className={cn(
+          'mb-carbon-03 flex w-full items-center justify-between',
+          'rounded-carbon px-carbon-03 py-carbon-02',
+          'text-carbon-xs font-semibold uppercase tracking-wider',
+          'text-carbon-gray-30 hover:bg-carbon-gray-80 hover:text-carbon-gray-10',
+          'transition-colors duration-carbon-01',
+          'md:hidden'
+        )}
       >
         <span>On This Page</span>
-        <ChevronRight className={cn('h-4 w-4 transition-transform', isExpanded && 'rotate-90')} />
+        <ChevronRight className={cn(
+          'h-4 w-4 transition-transform duration-carbon-01',
+          isExpanded && 'rotate-90'
+        )} />
       </button>
       
-      {/* TOC Content */}
+      {/* TOC Content - Carbon styling */}
       <nav
         className={cn(
-          'space-y-1 border-l border-border-dark',
+          'space-y-carbon-01 border-l border-carbon-gray-80',
           !isExpanded && 'hidden md:block'
         )}
       >
-        <div className="mb-3 hidden px-3 text-xs font-semibold uppercase tracking-wider text-content-dark-tertiary md:block">
+        {/* Title label */}
+        <div className={cn(
+          'mb-carbon-03 hidden px-carbon-03',
+          'text-carbon-xs font-semibold uppercase tracking-wider text-carbon-gray-30',
+          'md:block'
+        )}>
           On This Page
         </div>
         
         {items.map((item) => {
           const isActive = activeId === item.id;
-          const paddingLeft = (item.level - 1) * 12 + 12;
+          // Indent based on heading level (h2 = 0, h3 = 1, h4 = 2)
+          const indentLevel = item.level - 2;
+          const paddingLeft = indentLevel * 12 + 12;
           
           return (
             <button
               key={item.id}
               onClick={() => handleClick(item.id)}
               className={cn(
-                'flex w-full items-center gap-1 py-1.5 text-left text-sm transition-colors',
-                // Indent based on heading level
-                `pl-[${paddingLeft}px]`,
+                'flex w-full items-center gap-carbon-01 py-carbon-02',
+                'text-left text-carbon-xs transition-colors duration-carbon-01',
                 isActive
-                  ? 'border-l-2 border-brand-cyan bg-brand-cyan/10 pl-[calc(${paddingLeft}px-2px)] text-brand-cyan'
-                  : 'text-content-dark-tertiary hover:text-content-dark-secondary'
+                  ? 'border-l-2 border-carbon-blue-40 text-carbon-blue-40 font-medium'
+                  : 'border-l-2 border-transparent text-carbon-gray-30 hover:text-carbon-gray-10'
               )}
               style={{ paddingLeft: `${paddingLeft}px` }}
             >
               {isActive && (
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-cyan" />
+                <span className="h-1.5 w-1.5 rounded-full bg-carbon-blue-40 flex-shrink-0" />
               )}
-              <span className={cn(isActive && 'font-medium')}>{item.title}</span>
+              <span className="truncate">{item.title}</span>
             </button>
           );
         })}
       </nav>
       
-      {/* Back to top */}
+      {/* Back to top - Carbon styling */}
       {isExpanded && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="mt-4 hidden items-center gap-1 text-xs text-content-dark-tertiary hover:text-brand-cyan md:flex"
+          className={cn(
+            'mt-carbon-04 hidden items-center gap-carbon-01',
+            'text-carbon-xs text-carbon-gray-30',
+            'hover:text-carbon-blue-40',
+            'transition-colors duration-carbon-01',
+            'md:flex'
+          )}
         >
           <ChevronRight className="h-3 w-3 rotate-180" />
           Back to top

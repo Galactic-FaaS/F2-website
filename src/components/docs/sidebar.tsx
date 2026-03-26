@@ -8,9 +8,6 @@ import {
   BookOpen, 
   Code2, 
   Calculator, 
-  Sigma, 
-  Dice5, 
-  Brain, 
   FileCode2,
   Menu,
   X
@@ -133,7 +130,7 @@ export function Sidebar({ currentVersion = 'v3.0', isOpen, onClose }: SidebarPro
       <Button
         variant="ghost"
         size="icon"
-        className="fixed left-4 top-20 z-40 md:hidden"
+        className="fixed left-4 top-20 z-40 md:hidden text-carbon-gray-30 hover:text-carbon-gray-10 hover:bg-carbon-gray-80"
         onClick={() => setMobileOpen(!mobileOpen)}
       >
         {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -142,48 +139,65 @@ export function Sidebar({ currentVersion = 'v3.0', isOpen, onClose }: SidebarPro
       {/* Backdrop for mobile */}
       {mobileOpen && (
         <div 
-          className="fixed inset-0 z-30 bg-black/50 md:hidden"
+          className="fixed inset-0 z-30 bg-carbon-gray-100/80 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
       
-      {/* Sidebar */}
+      {/* Sidebar - Carbon Design styling */}
       <aside
         className={cn(
-          'fixed left-0 top-16 z-40 h-[calc(100vh-4rem)] w-72 overflow-y-auto border-r border-border-dark bg-deep-space transition-transform duration-300',
+          // Fixed positioning and dimensions
+          'fixed left-0 top-12 z-40 h-[calc(100vh-3rem)] w-64 overflow-y-auto',
+          // Carbon colors and border
+          'bg-carbon-gray-90 border-r border-carbon-gray-80',
+          // Smooth transition
+          'transition-transform duration-300 ease-carbon',
           // Mobile positioning
           'md:translate-x-0',
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
       >
-        <div className="p-4">
+        <div className="p-carbon-04">
           {/* Mobile close button */}
-          <div className="mb-4 flex justify-end md:hidden">
-            <Button variant="ghost" size="icon-sm" onClick={() => setMobileOpen(false)}>
+          <div className="mb-carbon-03 flex justify-end md:hidden">
+            <Button 
+              variant="ghost" 
+              size="icon-sm" 
+              onClick={() => setMobileOpen(false)}
+              className="text-carbon-gray-30 hover:text-carbon-gray-10 hover:bg-carbon-gray-80"
+            >
               <X className="h-4 w-4" />
             </Button>
           </div>
           
           {/* Navigation sections */}
-          <nav className="space-y-4">
+          <nav className="space-y-carbon-03">
             {currentNav.map((section) => {
               const SectionIcon = section.icon;
               const isExpanded = expandedSections.includes(section.title);
               
               return (
-                <div key={section.title} className="rounded-lg bg-surface-dark-secondary/50">
-                  {/* Section header */}
+                <div key={section.title} className="rounded-carbon bg-carbon-gray-80/50">
+                  {/* Section header - accordion style */}
                   <button
                     onClick={() => toggleSection(section.title)}
-                    className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold text-content-dark-primary transition-colors hover:bg-surface-dark-tertiary"
+                    className={cn(
+                      'flex w-full items-center justify-between',
+                      'rounded-carbon px-carbon-03 py-carbon-02',
+                      'text-carbon-xs font-semibold text-carbon-gray-10',
+                      'transition-colors duration-carbon-01',
+                      'hover:bg-carbon-gray-70',
+                      'focus:outline-none focus:ring-2 focus:ring-carbon-blue-50 focus:ring-inset'
+                    )}
                   >
-                    <div className="flex items-center gap-2">
-                      <SectionIcon className="h-4 w-4 text-brand-cyan" />
+                    <div className="flex items-center gap-carbon-02">
+                      <SectionIcon className="h-4 w-4 text-accent-cyan" />
                       <span>{section.title}</span>
                     </div>
                     <ChevronRight 
                       className={cn(
-                        'h-4 w-4 text-content-dark-tertiary transition-transform',
+                        'h-4 w-4 text-carbon-gray-30 transition-transform duration-carbon-01',
                         isExpanded && 'rotate-90'
                       )} 
                     />
@@ -191,17 +205,20 @@ export function Sidebar({ currentVersion = 'v3.0', isOpen, onClose }: SidebarPro
                   
                   {/* Section items */}
                   {isExpanded && (
-                    <div className="pb-2">
+                    <div className="pb-carbon-02">
                       {section.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
                           className={cn(
-                            'flex items-center gap-2 px-3 py-1.5 pl-9 text-sm transition-colors',
+                            'flex items-center gap-carbon-02',
+                            'px-carbon-03 py-carbon-02 pl-9',
+                            'text-carbon-xs transition-colors duration-carbon-01',
+                            'border-l-2 border-transparent',
                             isActive(item.href)
-                              ? 'border-l-2 border-brand-cyan bg-brand-cyan/10 text-brand-cyan'
-                              : 'text-content-dark-secondary hover:text-content-dark-primary hover:bg-surface-dark-tertiary'
+                              ? 'border-l-accent-cyan bg-accent-cyan/10 text-accent-cyan'
+                              : 'text-carbon-gray-30 hover:text-carbon-gray-10 hover:bg-carbon-gray-70'
                           )}
                         >
                           {item.title}
@@ -215,17 +232,29 @@ export function Sidebar({ currentVersion = 'v3.0', isOpen, onClose }: SidebarPro
           </nav>
           
           {/* External links */}
-          <div className="mt-6 space-y-2 border-t border-border-dark pt-4">
+          <div className="mt-carbon-05 space-y-carbon-02 border-t border-carbon-gray-80 pt-carbon-04">
             <Link
               href="/docs/v3.0/changelog"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-content-dark-secondary transition-colors hover:bg-surface-dark-tertiary hover:text-content-dark-primary"
+              className={cn(
+                'flex items-center gap-carbon-02 rounded-carbon',
+                'px-carbon-03 py-carbon-02',
+                'text-carbon-xs text-carbon-gray-30',
+                'transition-colors duration-carbon-01',
+                'hover:bg-carbon-gray-80 hover:text-carbon-gray-10'
+              )}
             >
               <FileCode2 className="h-4 w-4" />
               Changelog
             </Link>
             <Link
               href="/docs/v3.0/faq"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-content-dark-secondary transition-colors hover:bg-surface-dark-tertiary hover:text-content-dark-primary"
+              className={cn(
+                'flex items-center gap-carbon-02 rounded-carbon',
+                'px-carbon-03 py-carbon-02',
+                'text-carbon-xs text-carbon-gray-30',
+                'transition-colors duration-carbon-01',
+                'hover:bg-carbon-gray-80 hover:text-carbon-gray-10'
+              )}
             >
               <BookOpen className="h-4 w-4" />
               FAQ
