@@ -32,30 +32,53 @@ interface PrecisionResult {
 }
 
 const sampleCode = `! Fortran² Advanced Arithmetic Demo
-! Demonstrating arbitrary precision and interval arithmetic
+! Demonstrating multiple precision systems and interval arithmetic
 
 program arithmetic_demo
-  use f2_precision, only: wp => quad_real
-  use f2_interval, only: interval
-  use f2_dual, only: dual
-  
-  ! Define precision types
-  type(interval) :: x, result_interval
-  type(dual) :: y, result_dual
-  
-  ! Interval arithmetic: x ∈ [1.0, 1.1]
-  x = interval(1.0_wp, 1.1_wp)
-  
-  ! Compute f(x) = x² with guaranteed error bounds
-  result_interval = x ** 2
-  
-  ! Dual number for automatic differentiation
-  y = dual(1.0_wp, 1.0_wp)  ! value = 1.0, derivative = 1.0
-  result_dual = y ** 2       ! result = (1.0, 2.0)
-  
-  print *, "Interval result:", result_interval
-  print *, "Dual result:", result_dual
-  
+    use std::arithmetic
+    use std::arithmetic::ieee754
+    use std::arithmetic::arbitrary
+    use std::arithmetic::interval
+    use std::arithmetic::posit
+    
+    ! IEEE 754 standard precisions
+    real(binary32) :: x_single
+    real(binary64) :: x_double
+    real(binary128) :: x_quad
+    
+    ! Arbitrary precision (100 decimal digits)
+    real(arbitrary(precision=100)) :: x_arb, pi_arb
+    
+    ! Interval arithmetic for guaranteed bounds
+    type(interval(binary64)) :: x_int, result_int
+    
+    ! Posit arithmetic (alternative to IEEE 754)
+    real(posit32) :: x_posit
+    
+    ! Initialize values
+    x_single = 3.14159265
+    x_double = 3.141592653589793
+    x_quad = 3.141592653589793238462643383279502884197
+    
+    ! Arbitrary precision computation
+    x_arb = arbitrary_from_string("3.14159265358979323846264338327950288419716939937510")
+    pi_arb = compute_pi(precision=100)
+    
+    ! Interval arithmetic: x ∈ [1.0, 1.1]
+    x_int = interval(1.0, 1.1)
+    result_int = x_int ** 2  ! Guaranteed: result ∈ [1.0, 1.21]
+    
+    ! Posit arithmetic
+    x_posit = posit32_from_double(3.14159)
+    
+    ! Print precision comparison
+    print *, "Single precision: ", x_single
+    print *, "Double precision: ", x_double
+    print *, "Quad precision: ", x_quad
+    print *, "Arbitrary (100 digits): ", x_arb
+    print *, "Interval result: ", result_int
+    print *, "Posit value: ", x_posit
+    
 end program arithmetic_demo`;
 
 export function ArithmeticDemo() {

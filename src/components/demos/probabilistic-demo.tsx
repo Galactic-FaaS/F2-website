@@ -19,45 +19,73 @@ import {
 } from 'recharts';
 
 const sampleCode = `! Fortran² Probabilistic Programming Demo
-! Bayesian inference with MCMC sampling
+! Bayesian inference with MCMC sampling and distribution modeling
 
 program probabilistic_demo
-  use f2_probability
-  use f2_mcmc
-  
-  type(dist_normal) :: prior, likelihood
-  type(dist_posterior) :: posterior
-  type(mcmc_sampler) :: sampler
-  real :: observed_data(100)
-  real :: posterior_mean, posterior_std
-  real :: ci_lower, ci_upper
-  
-  ! Define prior: θ ~ N(0, 1)
-  prior = normal(0.0, 1.0)
-  
-  ! Generate synthetic observed data
-  ! Data: x_i ~ N(θ, 0.5) with true θ = 2.0
-  observed_data = normal_rng(2.0, 0.5, 100)
-  
-  ! Define likelihood: x_i | θ ~ N(θ, 0.5)
-  likelihood = normal(observed_data, 0.5)
-  
-  ! Compute posterior using MCMC
-  posterior = bayesian_update(prior, likelihood)
-  
-  ! Run MCMC sampling
-  call sampler%run(posterior, n_samples=10000)
-  
-  ! Extract posterior statistics
-  posterior_mean = mean(sampler%samples)
-  posterior_std = std(sampler%samples)
-  ci_lower = quantile(sampler%samples, 0.025)
-  ci_upper = quantile(sampler%samples, 0.975)
-  
-  print *, "Posterior Mean:", posterior_mean
-  print *, "Posterior Std:", posterior_std
-  print *, "95% CI: [", ci_lower, ",", ci_upper, "]"
-  
+    use std::probability
+    use std::probability::distributions
+    use std::probability::mcmc
+    use std::probability::inference
+    
+    ! Distribution types
+    type(Normal) :: prior, likelihood
+    type(Posterior) :: posterior
+    type(MetropolisHastings) :: sampler
+    type(Trace) :: samples
+    
+    ! Data and parameters
+    real(binary64), allocatable :: observed_data(:)
+    real(binary64) :: posterior_mean, posterior_std
+    real(binary64) :: ci_lower, ci_upper
+    integer :: n_samples, n_burnin
+    
+    ! Define prior: θ ~ N(0, 1)
+    prior = Normal(mu=0.0, sigma=1.0)
+    
+    ! Generate synthetic observed data
+    ! True parameter: θ = 2.0, known noise: σ = 0.5
+    n_samples = 100
+    allocate(observed_data(n_samples))
+    observed_data = random_normal(2.0, 0.5, n_samples)
+    
+    ! Define likelihood: x_i | θ ~ N(θ, 0.5)
+    likelihood = Normal(mu=unknown("theta"), sigma=0.5)
+    
+    ! Set up MCMC sampler
+    sampler = MetropolisHastings( &
+        proposal=Normal(mu=0.0, sigma=0.1), &
+        n_chains=4, &
+        n_samples=10000, &
+        n_burnin=1000 &
+    )
+    
+    ! Run Bayesian inference
+    posterior = bayesian_update(prior, likelihood, observed_data)
+    samples = sampler%run(posterior)
+    
+    ! Compute posterior statistics
+    posterior_mean = mean(samples)
+    posterior_std = std(samples)
+    ci_lower = quantile(samples, 0.025)
+    ci_upper = quantile(samples, 0.975)
+    
+    ! Print results
+    print *, "=== Bayesian Inference Results ==="
+    print *, "True parameter: θ = 2.0"
+    print *, "Posterior mean: ", posterior_mean
+    print *, "Posterior std:  ", posterior_std
+    print *, "95% CI: [", ci_lower, ", ", ci_upper, "]"
+    print *, "R-hat (convergence): ", gelman_rubin(samples)
+    
+    ! Model comparison
+    block
+        real(binary64) :: dic, waic
+        dic = compute_dic(posterior, observed_data)
+        waic = compute_waic(posterior, observed_data)
+        print *, "DIC:  ", dic
+        print *, "WAIC: ", waic
+    end block
+    
 end program probabilistic_demo`;
 
 interface DistributionData {

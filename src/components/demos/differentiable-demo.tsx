@@ -22,46 +22,81 @@ import {
 } from 'recharts';
 
 const sampleCode = `! Fortran² Differentiable Programming Demo
-! Automatic differentiation for neural networks
+! Automatic differentiation for neural networks and optimization
 
 program differentiable_demo
-  use f2_autodiff
-  use f2_nn
-  
-  type(dense_layer) :: layer1, layer2
-  type(dense_layer_grad) :: grad
-  real :: input(4, 32), output(2, 32)
-  real :: loss, accuracy
-  real :: gradients(1)
-  integer :: epoch
-  
-  ! Define neural network architecture
-  ! Input: 4 features -> Hidden: 8 -> Output: 2
-  layer1 = dense_layer(4, 8, activation='relu')
-  layer2 = dense_layer(8, 2, activation='softmax')
-  
-  ! Forward pass
-  input = random_normal(0.0, 1.0, [4, 32])
-  output = layer2%forward(layer1%forward(input))
-  
-  ! Compute loss (cross-entropy)
-  loss = cross_entropy_loss(output, target)
-  
-  ! Backward pass - compute gradients automatically
-  grad = backward(loss)
-  
-  ! Gradient descent update
-  layer1%weights = layer1%weights - lr * grad%w1
-  layer1%bias = layer1%bias - lr * grad%b1
-  
-  ! Training loop
-  do epoch = 1, 100
-    call train_step(input, target, loss, accuracy)
-  end do
-  
-  print *, "Final Loss:", loss
-  print *, "Accuracy:", accuracy * 100, "%"
-  
+    use std::autodiff
+    use std::neural
+    use std::optimization
+    
+    ! Define neural network layers
+    type(Dense) :: layer1, layer2, layer3
+    type(Sequential) :: model
+    type(Adam) :: optimizer
+    
+    ! Training data
+    real(binary64), allocatable :: X(:,:), y(:,:)
+    real(binary64) :: loss, accuracy
+    integer :: epoch, batch_size
+    
+    ! Create model: 4 -> 16 -> 8 -> 2
+    layer1 = Dense(input_dim=4, output_dim=16, activation='relu')
+    layer2 = Dense(input_dim=16, output_dim=8, activation='relu')
+    layer3 = Dense(input_dim=8, output_dim=2, activation='softmax')
+    
+    model = Sequential([layer1, layer2, layer3])
+    
+    ! Initialize optimizer with automatic differentiation
+    optimizer = Adam(learning_rate=0.001)
+    
+    ! Generate synthetic training data
+    call generate_data(X, y, n_samples=1000)
+    batch_size = 32
+    
+    ! Training loop with automatic gradient computation
+    do epoch = 1, 100
+        ! Forward pass - computation graph is built automatically
+        let output = model.forward(X)
+        
+        ! Compute cross-entropy loss
+        loss = cross_entropy(output, y)
+        
+        ! Backward pass - gradients computed via reverse-mode AD
+        let gradients = autodiff.backward(loss)
+        
+        ! Update weights using Adam optimizer
+        call optimizer.step(model, gradients)
+        
+        ! Compute accuracy
+        accuracy = compute_accuracy(output, y)
+        
+        if (mod(epoch, 10) == 0) then
+            print *, "Epoch ", epoch, " Loss: ", loss, " Accuracy: ", accuracy
+        end if
+    end do
+    
+    print *, "Training complete!"
+    print *, "Final accuracy: ", accuracy * 100, "%"
+    
+contains
+
+    subroutine generate_data(X, y, n_samples)
+        real(binary64), allocatable, intent(out) :: X(:,:), y(:,:)
+        integer, intent(in) :: n_samples
+        
+        allocate(X(n_samples, 4))
+        allocate(y(n_samples, 2))
+        
+        ! Generate synthetic classification data
+        call random_number(X)
+        y = 0.0
+        where (X(:,1) + X(:,2) > 1.0)
+            y(:,1) = 1.0
+        elsewhere
+            y(:,2) = 1.0
+        end where
+    end subroutine generate_data
+
 end program differentiable_demo`;
 
 interface TrainingData {

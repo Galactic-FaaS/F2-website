@@ -19,34 +19,65 @@ import {
 } from 'recharts';
 
 const sampleCode = `! Fortran² Symbolic Computation Demo
-! Computer algebra system with symbolic differentiation
+! Computer algebra system with symbolic differentiation and integration
 
 program symbolic_demo
-  use f2_symbolic
-  use f2_parser
-  
-  type(symbolic_expr) :: f, df, simplified
-  type(symbolic_eqn) :: eqn
-  real :: root
-  
-  ! Define f(x) = x² + 2x + 1
-  f = parse("x^2 + 2*x + 1")
-  
-  ! Compute derivative: f'(x) = 2x + 2
-  df = differentiate(f, "x")
-  
-  ! Simplify: (x + 1)²
-  simplified = simplify(f)
-  
-  ! Solve f(x) = 0 for x
-  eqn = f .eq. 0
-  root = solve(eqn, "x")  ! Returns x = -1
-  
-  print *, "f(x) =", to_string(f)
-  print *, "f'(x) =", to_string(df)
-  print *, "Simplified:", to_string(simplified)
-  print *, "Root:", root
-  
+    use std::symbolic
+    use std::symbolic::parser
+    use std::symbolic::simplify
+    use std::symbolic::calculus
+    
+    ! Symbolic expression types
+    type(SymbolicExpr) :: f, df, integral, simplified
+    type(SymbolicVar) :: x, y
+    type(Equation) :: eqn
+    type(SolutionSet) :: solutions
+    
+    ! Define symbolic variables
+    x = symbol("x")
+    y = symbol("y")
+    
+    ! Define f(x) = x² + 2x + 1
+    f = x**2 + 2*x + 1
+    
+    ! Compute derivative: f'(x) = 2x + 2
+    df = differentiate(f, x)
+    
+    ! Compute indefinite integral: ∫f(x)dx = x³/3 + x² + x + C
+    integral = integrate(f, x)
+    
+    ! Simplify: (x + 1)²
+    simplified = simplify(f)
+    
+    ! Solve f(x) = 0 for x
+    eqn = f .eq. 0
+    solutions = solve(eqn, x)  ! Returns x = -1 (double root)
+    
+    ! Print results
+    print *, "Original: f(x) = ", to_string(f)
+    print *, "Derivative: f'(x) = ", to_string(df)
+    print *, "Integral: ∫f(x)dx = ", to_string(integral)
+    print *, "Simplified: ", to_string(simplified)
+    print *, "Roots: ", solutions
+    
+    ! More complex example: trigonometric identity
+    block
+        type(SymbolicExpr) :: trig_expr, trig_simplified
+        trig_expr = sin(x)**2 + cos(x)**2
+        trig_simplified = simplify(trig_expr)  ! Returns 1
+        print *, "sin²(x) + cos²(x) = ", to_string(trig_simplified)
+    end block
+    
+    ! Partial derivatives
+    block
+        type(SymbolicExpr) :: g, dg_dx, dg_dy
+        g = x**2 + x*y + y**2
+        dg_dx = partial_derivative(g, x)  ! 2x + y
+        dg_dy = partial_derivative(g, y)  ! x + 2y
+        print *, "∂g/∂x = ", to_string(dg_dx)
+        print *, "∂g/∂y = ", to_string(dg_dy)
+    end block
+    
 end program symbolic_demo`;
 
 interface SymbolicResult {

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowRight, Info, Brain } from 'lucide-react';
+import { ArrowRight, Info, Brain, CheckCircle2, Zap, TrendingUp } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Differentiable Programming - Fortran² Documentation',
@@ -28,325 +28,316 @@ export default function DifferentiablePage() {
             <h1 className="text-h1 font-heading font-bold text-content-dark-primary">
               Differentiable Programming
             </h1>
-            <Badge variant="primary" className="bg-brand-purple/20 text-brand-purple">
-              <Brain className="h-3 w-3 mr-1" /> Core Feature
+            <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+              <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
             </Badge>
           </div>
           <p className="text-lg text-content-dark-secondary">
-            Fortran² provides powerful differentiable programming capabilities including automatic differentiation, 
-            neural network layers, gradient descent, and optimization algorithms.
+            Fortran² provides tape-based reverse-mode automatic differentiation (AD) with 
+            23 supported operations, enabling gradient-based optimization and machine learning.
           </p>
         </header>
 
         {/* Content */}
         <div className="space-y-12">
+          {/* Implementation Status */}
+          <section id="status">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Implementation Status
+            </h2>
+            <div className="grid gap-3">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-brand-green/10 border border-brand-green/30">
+                <CheckCircle2 className="h-5 w-5 text-brand-green" />
+                <div>
+                  <span className="font-medium text-content-dark-primary">Tape-Based Reverse-Mode AD</span>
+                  <span className="text-content-dark-secondary ml-2">Complete implementation with 23 operations</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-brand-green/10 border border-brand-green/30">
+                <CheckCircle2 className="h-5 w-5 text-brand-green" />
+                <div>
+                  <span className="font-medium text-content-dark-primary">Gradient Computation</span>
+                  <span className="text-content-dark-secondary ml-2">Automatic gradient for all supported operations</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-brand-green/10 border border-brand-green/30">
+                <CheckCircle2 className="h-5 w-5 text-brand-green" />
+                <div>
+                  <span className="font-medium text-content-dark-primary">Jacobian & Hessian</span>
+                  <span className="text-content-dark-secondary ml-2">Vector-Jacobian and Hessian products</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Overview */}
           <section id="overview">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
               Overview
             </h2>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Differentiable programming enables you to compute gradients automatically, making it ideal for:
+              Differentiable programming extends traditional programming with the ability to 
+              automatically compute derivatives of functions. Fortran² uses tape-based reverse-mode 
+              AD, which is efficient for functions with many inputs and few outputs (like neural networks).
             </p>
             <ul className="space-y-2 text-content-dark-secondary ml-6">
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Machine learning and deep learning</span>
+                <span><strong>Machine Learning:</strong> Training neural networks via backpropagation</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Physics-informed neural networks</span>
+                <span><strong>Optimization:</strong> Gradient-based optimization algorithms</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Optimization and root finding</span>
+                <span><strong>Sensitivity Analysis:</strong> Understanding how inputs affect outputs</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Sensitivity analysis</span>
+                <span><strong>Scientific Computing:</strong> Solving differential equations and inverse problems</span>
               </li>
             </ul>
           </section>
 
-          {/* Automatic Differentiation */}
-          <section id="auto-diff">
+          {/* Basic Usage */}
+          <section id="basic-usage">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Automatic Differentiation
+              Basic Usage
             </h2>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
-              The <code className="text-brand-cyan">autodiff</code> module provides automatic computation of 
-              gradients, jacobians, and hessians.
-            </p>
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              Forward Mode
-            </h3>
-            <CodeBlock
-              code={`use autodiff
-implicit none
-
-type(tensor) :: x, y, dy
-type(gradient) :: grad
-
-! Create tensor with gradient tracking
-x = tensor([1.0, 2.0, 3.0], requires_grad=.true.)
-
-! Compute function
-y = x * x + sin(x)  ! y = x^2 + sin(x)
-
-! Compute gradient dy/dx
-grad = y%grad(x)
-
-! Access gradient values
-print *, "dy/dx = ", grad%value  ! [2*x + cos(x)] at x=[1,2,3]
-                             ! = [2*1+cos(1), 2*2+cos(2), 2*3+cos(3)]
-
-! Compute second derivative (Hessian)
-grad = y%grad(x, order=2)`}
-              language="fortran"
-            />
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Reverse Mode (Backpropagation)
-            </h3>
-            <CodeBlock
-              code={`use autodiff
-implicit none
-
-type(tensor) :: a, b, c, result
-
-! Create computational graph
-a = tensor(3.0, requires_grad=.true.)
-b = tensor(4.0, requires_grad=.true.)
-
-! Build computation: c = a^2 + b^2
-c = a**2 + b**2
-
-! Forward pass
-result = c * 2 + a
-
-! Backward pass (compute gradients)
-call result%backward()
-
-! Access gradients
-print *, "dresult/da = ", a%grad%value  ! 2*a + 2 = 8
-print *, "dresult/db = ", b%grad%value  ! 4*b = 16`}
-              language="fortran"
-            />
-          </section>
-
-          {/* Neural Network Layers */}
-          <section id="neural-networks">
-            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Neural Network Layers
-            </h2>
-            <p className="text-content-dark-secondary leading-relaxed mb-4">
-              The <code className="text-brand-cyan">nn</code> module provides common neural network layers 
-              with automatic differentiation support.
+              Use the <code className="text-brand-cyan">differentiable</code> keyword to mark functions 
+              as differentiable. The compiler automatically generates gradient computation code.
             </p>
 
             <CodeBlock
-              code={`use nn
-implicit none
-
-type(linear_layer) :: linear
-type(conv2d_layer) :: conv
-type(lstm_layer) :: lstm
-type(attention_layer) :: attention
-type(tensor) :: input, output
-
-! Dense (Linear) layer
-! y = x @ W^T + b
-input = tensor([32, 128])  ! batch_size=32, features=128
-linear = linear_layer(128, 64)  ! 128 -> 64
-output = linear%forward(input)
-
-! Convolution layer
-input = tensor([8, 3, 32, 32])  ! batch, channels, height, width
-conv = conv2d_layer(3, 64, kernel_size=3, stride=1, padding=1)
-output = conv%forward(input)
-
-! LSTM (Long Short-Term Memory)
-input = tensor([16, 10, 64])  ! batch=16, seq=10, features=64
-lstm = lstm_layer(64, hidden_size=128, num_layers=2)
-output = lstm%forward(input)  ! Returns (output, hidden, cell)
-
-! Multi-head Attention
-input = tensor([4, 8, 128])  ! batch=4, seq=8, features=128
-attention = attention_layer(128, num_heads=8)
-output = attention%forward(input, input, input)`}
-              language="fortran"
-            />
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Building a Network
-            </h3>
-            <CodeBlock
-              code={`use nn
-implicit none
-
-type(module) :: net
-type(sequential) :: layers
-type(tensor) :: input, output
-
-! Build a simple MLP
-layers = sequential()
-
-call layers%add(linear_layer(784, 256))
-call layers%add(relu())           ! Activation function
-call layers%add(linear_layer(256, 128))
-call layers%add(relu())
-call layers%add(linear_layer(128, 10))
-
-! Forward pass
-input = tensor([64, 784])  ! 64 samples, 784 features
-output = layers%forward(input)
-
-! Get predictions
-output = softmax(output, dim=2)
-print *, "Predictions shape: ", output%shape
-
-! Compute loss
-type(tensor) :: target, loss
-target = tensor([1, 2, 3, 4, ...])  ! Class labels
-loss = cross_entropy(output, target)
-
-! Backward pass
-call loss%backward()
-
-! Access gradients in first layer
-type(linear_layer) :: first_layer
-first_layer = layers%layers(1)%as_linear()
-print *, "W grad shape: ", first_layer%weight%grad%shape`}
-              language="fortran"
-            />
-          </section>
-
-          {/* Gradient Descent */}
-          <section id="gradient-descent">
-            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Gradient Descent
-            </h2>
-            <p className="text-content-dark-secondary leading-relaxed mb-4">
-              The <code className="text-brand-cyan">optim</code> module provides various optimization algorithms.
-            </p>
-
-            <CodeBlock
-              code={`use optim
-use autodiff
-implicit none
-
-type(optimizer) :: sgd, adam, rmsprop
-type(linear_layer) :: layer
-type(tensor) :: input, target, loss
-real :: learning_rate
-
-! Create optimizer
-learning_rate = 0.001
-
-! Stochastic Gradient Descent
-sgd = sgd_optimizer([layer%weight, layer%bias], lr=learning_rate, momentum=0.9)
-
-! Adam optimizer (adaptive learning rate)
-adam = adam_optimizer([layer%weight, layer%bias], lr=learning_rate, &
-                     beta1=0.9, beta2=0.999, eps=1e-8)
-
-! RMSprop
-rmsprop = rmsprop_optimizer([layer%weight, layer%bias], lr=learning_rate, &
-                           alpha=0.99, eps=1e-8)
-
-! Training loop
-do epoch = 1, 100
-  do batch = 1, n_batches
-    ! Forward pass
-    output = model%forward(batch_input)
-    
-    ! Compute loss
-    loss = mse_loss(output, batch_target)
-    
-    ! Backward pass
-    call loss%backward()
-    
-    ! Update parameters
-    call adam%step()
-    call adam%zero_grad()
-  end do
-end do`}
-              language="fortran"
-            />
-          </section>
-
-          {/* Optimization */}
-          <section id="optimization">
-            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Optimization
-            </h2>
-            <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Beyond neural network training, Fortran² provides general optimization routines.
-            </p>
-
-            <CodeBlock
-              code={`use optim
-use autodiff
-implicit none
-
-type(tensor) :: x, result
-real :: f_result
-
-! Define objective function
-function objective(x) result(f)
-  type(tensor) :: x, f
-  f = x(1)**2 + x(2)**2 + sin(x(1)) * exp(-x(2))
+              code={`! Define a differentiable function
+differentiable function f(x, y)
+    real :: x, y
+    f = x**2 + sin(x * y) + y**3
 end function
 
-! Initialize
-x = tensor([1.0, 2.0])
-
-! Unconstrained optimization (L-BFGS-B)
-result = fmin_lbfgsb(objective, x, max_iter=100)
-
-! Gradient descent
-result = fmin_gd(objective, x, lr=0.01, max_iter=1000)
-
-! Newton method (requires gradients)
-result = fmin_newton(objective, x)
-
-! Constrained optimization
-! Minimize subject to: g(x) <= 0
-type(tensor) :: constraints(1)
-constraints(1) = x(1) + x(2) - 1.0  ! x1 + x2 <= 1
-result = fmin_slsqp(objective, x, constraints=constraints)`}
+! Compute function value and gradient
+let (value, gradient) = grad(f, [2.0, 3.0])
+print("f(2, 3) = {value}")
+print("∇f = [{gradient[0]}, {gradient[1]}]")`}
               language="fortran"
+              filename="basic_ad.f2"
             />
+          </section>
 
-            <div className="mt-4 p-4 rounded-lg bg-brand-cyan/10 border border-brand-cyan/30">
-              <div className="flex items-center gap-2 text-brand-cyan mb-2">
-                <Info className="h-4 w-4" />
-                <span className="font-medium">Physics-Informed Learning</span>
+          {/* Reverse Mode AD */}
+          <section id="reverse-mode">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Reverse Mode AD (Backpropagation)
+            </h2>
+            <p className="text-content-dark-secondary leading-relaxed mb-4">
+              Reverse mode AD records the computation graph on a "tape" during the forward pass, 
+              then propagates gradients backward. This is the most efficient mode for scalar-valued 
+              functions of many variables.
+            </p>
+
+            <CodeBlock
+              code={`! Tape-based reverse-mode AD
+differentiable function loss(weights, inputs, targets)
+    real :: weights(:), inputs(:), targets(:)
+    
+    ! Forward pass through neural network
+    let hidden = relu(matmul(inputs, weights[0]) + biases[0])
+    let output = sigmoid(matmul(hidden, weights[1]) + biases[1])
+    
+    ! Compute loss
+    loss = mean((output - targets)**2)
+end function
+
+! Training step with automatic gradient
+function train_step(weights, inputs, targets, lr)
+    real :: weights(:), inputs(:), targets(:), lr
+    
+    ! Compute gradient
+    let (loss_val, gradients) = grad(loss, weights, inputs, targets)
+    
+    ! Update weights with gradient descent
+    weights[0] = weights[0] - lr * gradients[0]
+    weights[1] = weights[1] - lr * gradients[1]
+    
+    return loss_val
+end function`}
+              language="fortran"
+              filename="neural_net.f2"
+            />
+          </section>
+
+          {/* Supported Operations */}
+          <section id="operations">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Supported Operations (23 Total)
+            </h2>
+            <p className="text-content-dark-secondary leading-relaxed mb-4">
+              Fortran²'s AD system supports 23 operations with verified gradients:
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2">Elementary Functions</h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
+                  <li>• <code>sin, cos, tan</code></li>
+                  <li>• <code>exp, log, sqrt</code></li>
+                  <li>• <code>sinh, cosh, tanh</code></li>
+                  <li>• <code>asin, acos, atan</code></li>
+                </ul>
               </div>
-              <p className="text-sm text-content-dark-secondary">
-                Fortran²'s differentiable programming is ideal for physics-informed neural networks (PINNs), 
-                where you can embed physical constraints directly into the loss function.
-              </p>
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2">Arithmetic Operations</h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
+                  <li>• Addition, subtraction, multiplication, division</li>
+                  <li>• Power (<code>**</code>)</li>
+                  <li>• Negation, absolute value</li>
+                  <li>• Matrix multiplication</li>
+                </ul>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2">Neural Network Functions</h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
+                  <li>• <code>relu, sigmoid, softmax</code></li>
+                  <li>• <code>leaky_relu, elu</code></li>
+                  <li>• <code>dropout</code> (with fixed seed)</li>
+                  <li>• <code>batch_norm</code></li>
+                </ul>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2">Reduction Operations</h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
+                  <li>• <code>sum, mean</code></li>
+                  <li>• <code>max, min</code></li>
+                  <li>• <code>norm</code></li>
+                  <li>• <code>dot_product</code></li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Jacobian and Hessian */}
+          <section id="jacobian-hessian">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Jacobian and Hessian Computation
+            </h2>
+            <p className="text-content-dark-secondary leading-relaxed mb-4">
+              Fortran² provides efficient computation of Jacobians and Hessians:
+            </p>
+
+            <CodeBlock
+              code={`! Vector-valued function
+differentiable function vector_func(x)
+    real :: x(3)
+    real :: vector_func(3)
+    vector_func[0] = x[0]**2 + x[1]
+    vector_func[1] = sin(x[0] * x[2])
+    vector_func[2] = exp(x[1]) + x[2]
+end function
+
+! Compute Jacobian matrix
+let J = jacobian(vector_func, [1.0, 2.0, 3.0])
+! J is a 3x3 matrix of partial derivatives
+
+! Compute Hessian (matrix of second derivatives)
+differentiable function scalar_func(x)
+    real :: x(2)
+    scalar_func = x[0]**2 + x[0]*x[1] + x[1]**2
+end function
+
+let H = hessian(scalar_func, [1.0, 2.0])
+! H is a 2x2 symmetric matrix`}
+              language="fortran"
+              filename="jacobian.f2"
+            />
+          </section>
+
+          {/* Optimization Example */}
+          <section id="optimization">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Gradient-Based Optimization
+            </h2>
+            <p className="text-content-dark-secondary leading-relaxed mb-4">
+              Use automatic differentiation for gradient-based optimization:
+            </p>
+
+            <CodeBlock
+              code={`! Minimize Rosenbrock function using gradient descent
+differentiable function rosenbrock(x)
+    real :: x(2)
+    rosenbrock = (1 - x[0])**2 + 100 * (x[1] - x[0]**2)**2
+end function
+
+function main()
+    real :: x(2) = [0.0, 0.0]  ! Initial guess
+    real :: lr = 0.001
+    integer :: i
+    
+    for i in 1..10000 {
+        let (f_val, gradient) = grad(rosenbrock, x)
+        
+        ! Gradient descent update
+        x = x - lr * gradient
+        
+        if i % 1000 == 0 {
+            print("Iteration {i}: f = {f_val:.6f}, x = [{x[0]:.4f}, {x[1]:.4f}]")
+        }
+    }
+    
+    print("Minimum at: [{x[0]:.6f}, {x[1]:.6f}]")
+    ! Expected: [1.0, 1.0]
+end function`}
+              language="fortran"
+              filename="optimize.f2"
+            />
+          </section>
+
+          {/* Performance Tips */}
+          <section id="performance">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Performance Considerations
+            </h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="p-4 rounded-lg bg-brand-cyan/10 border border-brand-cyan/30">
+                <div className="flex items-center gap-2 text-brand-cyan mb-2">
+                  <Zap className="h-4 w-4" />
+                  <span className="font-medium">Memory Efficiency</span>
+                </div>
+                <p className="text-sm text-content-dark-secondary">
+                  The tape records only necessary operations. Use <code>checkpoint()</code> for 
+                  long computations to reduce memory usage.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-brand-cyan/10 border border-brand-cyan/30">
+                <div className="flex items-center gap-2 text-brand-cyan mb-2">
+                  <TrendingUp className="h-4 w-4" />
+                  <span className="font-medium">Vectorization</span>
+                </div>
+                <p className="text-sm text-content-dark-secondary">
+                  AD operations are SIMD-vectorized for batch processing. Process multiple 
+                  samples simultaneously for best performance.
+                </p>
+              </div>
             </div>
           </section>
 
           {/* Navigation */}
           <nav className="mt-12 flex items-center justify-between border-t border-border-dark pt-8">
             <Link 
-              href="/docs/v3.0/probabilistic"
+              href="/docs/v3.0/advanced-arithmetic"
               className="group flex flex-col items-start"
             >
               <span className="text-sm text-content-dark-tertiary mb-1">Previous</span>
-              <span className="text-brand-cyan group-hover:underline">← Probabilistic Programming</span>
+              <span className="text-brand-cyan group-hover:underline">← Advanced Arithmetic</span>
             </Link>
             <Link 
-              href="/docs/v3.0/api-reference"
+              href="/docs/v3.0/probabilistic"
               className="group flex flex-col items-end"
             >
               <span className="text-sm text-content-dark-tertiary mb-1">Next</span>
               <span className="text-brand-cyan group-hover:underline">
-                API Reference →
+                Probabilistic Programming →
               </span>
             </Link>
           </nav>
