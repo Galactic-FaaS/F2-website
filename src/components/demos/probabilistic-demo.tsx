@@ -5,6 +5,8 @@ import { DemoContainer } from './demo-container';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
+  AreaChart, 
+  Area, 
   LineChart, 
   Line, 
   XAxis, 
@@ -12,8 +14,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  Area,
-  AreaChart,
   ReferenceLine
 } from 'recharts';
 
@@ -126,67 +126,69 @@ export function ProbabilisticDemo() {
     <div className="space-y-6">
       {/* Posterior Statistics */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">Posterior Mean</p>
-            <p className="text-2xl font-mono text-brand-cyan mt-1">0.67</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">Posterior Mean</p>
+            <p className="text-2xl font-mono text-carbon-blue-40 mt-1">0.67</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">Posterior Std</p>
-            <p className="text-2xl font-mono text-brand-purple mt-1">0.12</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">Posterior Std</p>
+            <p className="text-2xl font-mono text-accent-purple mt-1">0.12</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">95% CI Lower</p>
-            <p className="text-2xl font-mono text-brand-green mt-1">0.44</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">95% CI Lower</p>
+            <p className="text-2xl font-mono text-status-success mt-1">0.44</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">95% CI Upper</p>
-            <p className="text-2xl font-mono text-brand-green mt-1">0.89</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">95% CI Upper</p>
+            <p className="text-2xl font-mono text-status-success mt-1">0.89</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Distribution Comparison Chart */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Bayesian Inference Results</CardTitle>
-          <CardDescription>Prior Beta(2,2), Likelihood, and Posterior distributions</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Bayesian Inference Results</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Prior Beta(2,2), Likelihood, and Posterior distributions
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={generateDistributionData()}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis 
                   dataKey="x" 
-                  stroke="#94A3B8"
-                  label={{ value: 'θ (parameter)', position: 'bottom', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'θ (parameter)', position: 'bottom', fill: '#6B6B6B' }}
                 />
                 <YAxis 
-                  stroke="#94A3B8"
-                  label={{ value: 'Density', angle: -90, position: 'insideLeft', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'Density', angle: -90, position: 'insideLeft', fill: '#6B6B6B' }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
-                <ReferenceLine x={2} stroke="#64748B" strokeDasharray="5 5" label="True θ" />
+                <ReferenceLine x={2} stroke="#5A5A5A" strokeDasharray="5 5" label="True θ" />
                 <ReferenceLine x={1.82} stroke="#00D4FF" strokeDasharray="3 3" label="Estimated" />
                 <Area 
                   type="monotone" 
                   dataKey="prior" 
-                  stroke="#94A3B8" 
-                  fill="#94A3B8" 
+                  stroke="#6B6B6B" 
+                  fill="#6B6B6B" 
                   fillOpacity={0.2}
                   name="Prior Beta(2,2)"
                 />
@@ -211,51 +213,53 @@ export function ProbabilisticDemo() {
           </div>
           <div className="flex gap-6 mt-4 justify-center flex-wrap">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-content-dark-tertiary" />
-              <span className="text-sm text-content-dark-secondary">Prior</span>
+              <div className="w-3 h-3 rounded-full bg-carbon-gray-50" />
+              <span className="text-carbon-sm text-carbon-gray-40">Prior</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-purple" />
-              <span className="text-sm text-content-dark-secondary">Likelihood</span>
+              <div className="w-3 h-3 rounded-full bg-accent-purple" />
+              <span className="text-carbon-sm text-carbon-gray-40">Likelihood</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-cyan" />
-              <span className="text-sm text-content-dark-secondary">Posterior</span>
+              <div className="w-3 h-3 rounded-full bg-carbon-blue-40" />
+              <span className="text-carbon-sm text-carbon-gray-40">Posterior</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* MCMC Trace Plot */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>MCMC Sampling Trace</CardTitle>
-          <CardDescription>NUTS sampler convergence for 200 iterations</CardDescription>
+          <CardTitle className="text-carbon-gray-10">MCMC Sampling Trace</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            NUTS sampler convergence for 200 iterations
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={generateTraceData()}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis 
                   dataKey="iteration" 
-                  stroke="#94A3B8"
-                  label={{ value: 'Iteration', position: 'bottom', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'Iteration', position: 'bottom', fill: '#6B6B6B' }}
                 />
                 <YAxis 
-                  stroke="#94A3B8"
+                  stroke="#6B6B6B"
                   domain={[0, 4]}
-                  label={{ value: 'θ', angle: -90, position: 'insideLeft', fill: '#94A3B8' }}
+                  label={{ value: 'θ', angle: -90, position: 'insideLeft', fill: '#6B6B6B' }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
-                <ReferenceLine y={2} stroke="#64748B" strokeDasharray="5 5" />
+                <ReferenceLine y={2} stroke="#5A5A5A" strokeDasharray="5 5" />
                 <ReferenceLine y={1.82} stroke="#00D4FF" strokeDasharray="3 3" />
                 <Line 
                   type="monotone" 
@@ -268,9 +272,9 @@ export function ProbabilisticDemo() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 p-3 bg-surface-dark-overlay rounded-lg">
-            <p className="text-sm text-content-dark-secondary">
-              <span className="text-brand-green font-semibold">✓ Convergence:</span> The NUTS sampler has converged. 
+          <div className="mt-4 p-3 bg-carbon-gray-90 rounded-lg">
+            <p className="text-carbon-sm text-carbon-gray-40">
+              <span className="text-status-success font-semibold">✓ Convergence:</span> The NUTS sampler has converged. 
               Effective sample size: 1,842 (92% efficiency).
             </p>
           </div>
@@ -278,23 +282,25 @@ export function ProbabilisticDemo() {
       </Card>
 
       {/* Available Distributions */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Available Distributions (15+)</CardTitle>
-          <CardDescription>Full support for continuous, discrete, and multivariate distributions</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Available Distributions (15+)</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Full support for continuous, discrete, and multivariate distributions
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-brand-cyan">Continuous</p>
+              <p className="text-carbon-sm font-semibold text-carbon-blue-40">Continuous</p>
               <div className="flex flex-wrap gap-2">
                 {['Normal', 'Beta', 'Gamma', 'Exponential', 'Uniform', 'LogNormal', 'ChiSquared', 'StudentT', 'Cauchy'].map(d => (
-                  <Badge key={d} variant="default">{d}</Badge>
+                  <Badge key={d} variant="secondary">{d}</Badge>
                 ))}
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-brand-purple">Discrete</p>
+              <p className="text-carbon-sm font-semibold text-accent-purple">Discrete</p>
               <div className="flex flex-wrap gap-2">
                 {['Bernoulli', 'Binomial', 'Poisson', 'Geometric'].map(d => (
                   <Badge key={d} variant="secondary">{d}</Badge>
@@ -302,7 +308,7 @@ export function ProbabilisticDemo() {
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-brand-green">Multivariate</p>
+              <p className="text-carbon-sm font-semibold text-status-success">Multivariate</p>
               <div className="flex flex-wrap gap-2">
                 {['MultivariateNormal', 'Dirichlet'].map(d => (
                   <Badge key={d} variant="success">{d}</Badge>
@@ -314,32 +320,32 @@ export function ProbabilisticDemo() {
       </Card>
 
       {/* Inference Methods */}
-      <Card variant="outlined" padding="md">
+      <Card variant="outlined" padding="md" className="border-carbon-blue-60/30">
         <CardHeader>
-          <CardTitle className="text-brand-cyan">Inference Methods</CardTitle>
+          <CardTitle className="text-carbon-blue-40">Inference Methods</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">infer(model, data, method="mcmc")</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Markov Chain Monte Carlo</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">infer(model, data, method="mcmc")</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Markov Chain Monte Carlo</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">infer(model, data, method="hmc")</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Hamiltonian Monte Carlo</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">infer(model, data, method="hmc")</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Hamiltonian Monte Carlo</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">infer(model, data, method="nuts")</p>
-              <p className="text-sm text-content-dark-secondary mt-1">No-U-Turn Sampler</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">infer(model, data, method="nuts")</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">No-U-Turn Sampler</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">infer(model, data, method="advi")</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Automatic Differentiation VI</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">infer(model, data, method="advi")</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Automatic Differentiation VI</p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-surface-dark-overlay rounded-lg">
-            <p className="text-sm text-content-dark-secondary">
-              <span className="text-brand-green font-semibold">Status:</span> Production-ready. 
+          <div className="mt-4 p-3 bg-carbon-gray-90 rounded-lg">
+            <p className="text-carbon-sm text-carbon-gray-40">
+              <span className="text-status-success font-semibold">Status:</span> Production-ready. 
               Full probabilistic programming with sample(), observe(), and infer() primitives.
             </p>
           </div>

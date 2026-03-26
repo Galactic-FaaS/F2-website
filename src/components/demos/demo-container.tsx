@@ -4,7 +4,7 @@ import { useState, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { CodeBlock } from '@/components/ui/code-block';
-import { Play, Copy, RefreshCw, Check } from 'lucide-react';
+import { Play, Copy, RefreshCw, Check, Terminal } from 'lucide-react';
 
 interface DemoContainerProps {
   title: string;
@@ -46,14 +46,19 @@ export function DemoContainer({
   };
 
   return (
-    <div className={cn('rounded-xl border border-border-dark bg-surface-dark-secondary overflow-hidden', className)}>
+    <div className={cn('rounded-xl border border-carbon-gray-80 bg-carbon-gray-90 overflow-hidden', className)}>
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-border-dark bg-surface-dark-tertiary px-6 py-4">
-        <div>
-          <h3 className="text-lg font-semibold text-content-dark-primary">{title}</h3>
-          {description && (
-            <p className="text-sm text-content-dark-secondary mt-1">{description}</p>
-          )}
+      <div className="flex items-center justify-between border-b border-carbon-gray-70 bg-carbon-gray-80 px-6 py-4">
+        <div className="flex items-center gap-4">
+          <div className="h-10 w-10 rounded-lg bg-carbon-blue-60/10 flex items-center justify-center">
+            <Terminal className="h-5 w-5 text-carbon-blue-40" />
+          </div>
+          <div>
+            <h3 className="text-carbon-lg font-semibold text-carbon-gray-10">{title}</h3>
+            {description && (
+              <p className="text-carbon-sm text-carbon-gray-40 mt-0.5">{description}</p>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -64,8 +69,8 @@ export function DemoContainer({
           >
             {copied ? (
               <>
-                <Check className="h-4 w-4 text-brand-green" />
-                <span className="text-brand-green">Copied</span>
+                <Check className="h-4 w-4 text-status-success" />
+                <span className="text-status-success">Copied</span>
               </>
             ) : (
               <>
@@ -90,7 +95,7 @@ export function DemoContainer({
       </div>
 
       {/* Code Editor */}
-      <div className="border-b border-border-dark">
+      <div className="border-b border-carbon-gray-70">
         <CodeBlock
           code={code}
           language={language}
@@ -101,14 +106,14 @@ export function DemoContainer({
 
       {/* Output Area */}
       {(showOutput || output) && (
-        <div className="bg-surface-dark-overlay">
-          <div className="flex items-center gap-2 border-b border-border-dark px-4 py-2">
+        <div className="bg-carbon-gray-100">
+          <div className="flex items-center gap-2 border-b border-carbon-gray-70 px-4 py-2">
             <div className="flex gap-1.5">
-              <div className="h-3 w-3 rounded-full bg-red-500/70" />
-              <div className="h-3 w-3 rounded-full bg-amber-500/70" />
-              <div className="h-3 w-3 rounded-full bg-green-500/70" />
+              <div className="h-3 w-3 rounded-full bg-status-error/70" />
+              <div className="h-3 w-3 rounded-full bg-status-warning/70" />
+              <div className="h-3 w-3 rounded-full bg-status-success/70" />
             </div>
-            <span className="text-xs text-content-dark-tertiary ml-2">Output</span>
+            <span className="text-carbon-xs text-carbon-gray-50 ml-2">Output</span>
           </div>
           <div className="p-4">
             {output || children}

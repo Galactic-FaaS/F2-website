@@ -6,16 +6,14 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  ReferenceLine,
   Area,
-  ComposedChart
+  ComposedChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+  Line
 } from 'recharts';
 
 const sampleCode = `! Fortran² Symbolic Computation Demo
@@ -131,11 +129,11 @@ export function SymbolicDemo() {
   const outputContent = results ? (
     <div className="space-y-6">
       {/* Implementation Status Warning */}
-      <Card variant="outlined" padding="md" className="border-amber-500/50 bg-amber-500/5">
+      <Card variant="outlined" padding="md" className="border-status-warning/50 bg-status-warning/5">
         <CardContent>
           <div className="flex items-center gap-3">
             <Badge variant="warning">⚠️ 30% Implemented</Badge>
-            <p className="text-sm text-content-dark-secondary">
+            <p className="text-carbon-sm text-carbon-gray-40">
               Symbolic computation is under active development. Some features shown are planned.
             </p>
           </div>
@@ -144,23 +142,23 @@ export function SymbolicDemo() {
 
       {/* Expression Operations */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card variant="outlined" padding="md">
+        <Card variant="outlined" padding="md" className="border-carbon-gray-80">
           <CardHeader className="pb-2">
             <Badge variant="primary">Original</Badge>
           </CardHeader>
           <CardContent>
-            <p className="text-xl font-mono text-brand-cyan">
+            <p className="text-xl font-mono text-carbon-blue-40">
               {demos[selectedDemo].latex.original}
             </p>
           </CardContent>
         </Card>
         
-        <Card variant="outlined" padding="md">
+        <Card variant="outlined" padding="md" className="border-carbon-gray-80">
           <CardHeader className="pb-2">
             <Badge variant="secondary">Simplified</Badge>
           </CardHeader>
           <CardContent>
-            <p className="text-xl font-mono text-brand-green">
+            <p className="text-xl font-mono text-status-success">
               {demos[selectedDemo].latex.simplified}
             </p>
           </CardContent>
@@ -169,31 +167,31 @@ export function SymbolicDemo() {
 
       {/* Derivative & Integral */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card variant="outlined" padding="md">
+        <Card variant="outlined" padding="md" className="border-carbon-gray-80">
           <CardHeader>
-            <CardTitle className="text-brand-purple">Derivative <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
-            <CardDescription>Symbolic differentiation</CardDescription>
+            <CardTitle className="text-accent-purple">Derivative <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
+            <CardDescription className="text-carbon-gray-40">Symbolic differentiation</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-mono text-brand-purple">
+            <p className="text-2xl font-mono text-accent-purple">
               {demos[selectedDemo].latex.derivative}
             </p>
-            <p className="text-sm text-content-dark-secondary mt-2">
+            <p className="text-carbon-sm text-carbon-gray-40 mt-2">
               Roots at x = {demos[selectedDemo].roots.join(', ') || 'none'}
             </p>
           </CardContent>
         </Card>
         
-        <Card variant="outlined" padding="md">
+        <Card variant="outlined" padding="md" className="border-carbon-gray-80">
           <CardHeader>
-            <CardTitle className="text-brand-cyan">Integral <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
-            <CardDescription>Symbolic integration</CardDescription>
+            <CardTitle className="text-carbon-blue-40">Integral <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
+            <CardDescription className="text-carbon-gray-40">Symbolic integration</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-mono text-brand-cyan">
+            <p className="text-2xl font-mono text-carbon-blue-40">
               ∫ {demos[selectedDemo].latex.original} dx
             </p>
-            <p className="text-xl font-mono text-content-dark-primary mt-2">
+            <p className="text-xl font-mono text-carbon-gray-10 mt-2">
               = {demos[selectedDemo].latex.integrated} + C
             </p>
           </CardContent>
@@ -201,35 +199,35 @@ export function SymbolicDemo() {
       </div>
 
       {/* Function Plot */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Function Visualization</CardTitle>
-          <CardDescription>Original function f(x) and its derivative f'(x)</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Function Visualization</CardTitle>
+          <CardDescription className="text-carbon-gray-40">Original function f(x) and its derivative f'(x)</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={generatePlotData()}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis 
                   dataKey="x" 
-                  stroke="#94A3B8" 
-                  label={{ value: 'x', position: 'bottom', fill: '#94A3B8' }}
+                  stroke="#6B6B6B" 
+                  label={{ value: 'x', position: 'bottom', fill: '#6B6B6B' }}
                 />
                 <YAxis 
-                  stroke="#94A3B8"
-                  label={{ value: 'y', angle: -90, position: 'insideLeft', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'y', angle: -90, position: 'insideLeft', fill: '#6B6B6B' }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
-                <ReferenceLine y={0} stroke="#64748B" />
-                <ReferenceLine x={-1} stroke="#64748B" strokeDasharray="5 5" />
+                <ReferenceLine y={0} stroke="#5A5A5A" />
+                <ReferenceLine x={-1} stroke="#5A5A5A" strokeDasharray="5 5" />
                 <Area 
                   type="monotone" 
                   dataKey="y" 
@@ -251,22 +249,22 @@ export function SymbolicDemo() {
           </div>
           <div className="flex gap-6 mt-4 justify-center">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-cyan" />
-              <span className="text-sm text-content-dark-secondary">f(x) = x² + 2x + 1</span>
+              <div className="w-3 h-3 rounded-full bg-carbon-blue-40" />
+              <span className="text-carbon-sm text-carbon-gray-40">f(x) = x² + 2x + 1</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-purple" />
-              <span className="text-sm text-content-dark-secondary">f'(x) = 2x + 2</span>
+              <div className="w-3 h-3 rounded-full bg-accent-purple" />
+              <span className="text-carbon-sm text-carbon-gray-40">f'(x) = 2x + 2</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Implementation Status */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Implementation Status</CardTitle>
-          <CardDescription>Current and planned features</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Implementation Status</CardTitle>
+          <CardDescription className="text-carbon-gray-40">Current and planned features</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -277,10 +275,10 @@ export function SymbolicDemo() {
               { op: 'Integration', detail: 'Symbolic integration', status: '❌ Planned' },
               { op: 'Equation Solving', detail: 'Symbolic equation solver', status: '❌ Planned' },
             ].map((step, idx) => (
-              <div key={idx} className="flex items-center gap-4 p-3 bg-surface-dark-overlay rounded-lg">
+              <div key={idx} className="flex items-center gap-4 p-3 bg-carbon-gray-90 rounded-lg">
                 <span className="text-lg">{step.status}</span>
-                <Badge variant="default">{step.op}</Badge>
-                <span className="text-sm text-content-dark-secondary">{step.detail}</span>
+                <Badge variant="secondary">{step.op}</Badge>
+                <span className="text-carbon-sm text-carbon-gray-40">{step.detail}</span>
               </div>
             ))}
           </div>

@@ -99,46 +99,48 @@ export function ArithmeticDemo() {
       {/* Precision Results */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {results.map((result, idx) => (
-          <Card key={idx} variant="outlined" padding="sm">
+          <Card key={idx} variant="outlined" padding="sm" className="border-carbon-gray-80">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-semibold text-content-dark-primary">{result.type}</p>
-                <p className="text-2xl font-mono text-brand-cyan mt-1">
+                <p className="font-semibold text-carbon-gray-10">{result.type}</p>
+                <p className="text-2xl font-mono text-carbon-blue-40 mt-1">
                   {result.value.toPrecision(result.actualPrecision)}
                 </p>
               </div>
-              <Badge variant={idx === 3 ? 'success' : 'default'}>
+              <Badge variant={idx === 3 ? 'success' : 'secondary'}>
                 {result.actualPrecision} digits
               </Badge>
             </div>
-            <div className="mt-3 text-xs text-content-dark-secondary space-y-1">
-              <p>Absolute Error: <span className="font-mono text-brand-purple">{result.error.toExponential(2)}</span></p>
-              <p>Relative Error: <span className="font-mono text-brand-green">{result.relativeError.toExponential(2)}</span></p>
+            <div className="mt-3 text-xs text-carbon-gray-40 space-y-1">
+              <p>Absolute Error: <span className="font-mono text-accent-purple">{result.error.toExponential(2)}</span></p>
+              <p>Relative Error: <span className="font-mono text-status-success">{result.relativeError.toExponential(2)}</span></p>
             </div>
           </Card>
         ))}
       </div>
 
       {/* Precision Comparison Chart */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Precision Comparison</CardTitle>
-          <CardDescription>Number of accurate digits by precision type</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Precision Comparison</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Number of accurate digits by precision type
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={results} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                <XAxis type="number" stroke="#94A3B8" />
-                <YAxis dataKey="type" type="category" stroke="#94A3B8" width={120} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
+                <XAxis type="number" stroke="#6B6B6B" />
+                <YAxis dataKey="type" type="category" stroke="#6B6B6B" width={120} />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
                 <Bar dataKey="actualPrecision" name="Significant Digits" radius={[0, 4, 4, 0]}>
                   {results.map((entry, index) => (
@@ -155,27 +157,29 @@ export function ArithmeticDemo() {
       </Card>
 
       {/* Interval Arithmetic Demo */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle className="text-brand-purple">Interval Arithmetic</CardTitle>
-          <CardDescription>Guaranteed error bounds for numerical computations</CardDescription>
+          <CardTitle className="text-accent-purple">Interval Arithmetic</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Guaranteed error bounds for numerical computations
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="bg-surface-dark-overlay rounded-lg p-4 font-mono text-sm">
-            <p className="text-content-dark-secondary mb-2">Computing f(x) = x² for x ∈ [1.0, 1.1]:</p>
+          <div className="bg-carbon-gray-90 rounded-lg p-4 font-mono text-carbon-sm">
+            <p className="text-carbon-gray-40 mb-2">Computing f(x) = x² for x ∈ [1.0, 1.1]:</p>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Input Interval</p>
-                <p className="text-brand-cyan text-lg">[1.0, 1.1]</p>
+                <p className="text-carbon-gray-50">Input Interval</p>
+                <p className="text-carbon-blue-40 text-lg">[1.0, 1.1]</p>
               </div>
-              <div className="text-2xl text-content-dark-tertiary">→</div>
+              <div className="text-2xl text-carbon-gray-60">→</div>
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Output Interval</p>
-                <p className="text-brand-green text-lg">[1.0, 1.21]</p>
+                <p className="text-carbon-gray-50">Output Interval</p>
+                <p className="text-status-success text-lg">[1.0, 1.21]</p>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-border-dark">
-              <p className="text-content-dark-tertiary">
+            <div className="mt-4 pt-4 border-t border-carbon-gray-70">
+              <p className="text-carbon-gray-50">
                 The output interval guarantees the true result is contained within [1.0, 1.21]
               </p>
             </div>
@@ -184,27 +188,29 @@ export function ArithmeticDemo() {
       </Card>
 
       {/* Posit Arithmetic Demo */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle className="text-brand-green">Posit Arithmetic</CardTitle>
-          <CardDescription>Alternative to IEEE 754 with quire accumulators</CardDescription>
+          <CardTitle className="text-status-success">Posit Arithmetic</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Alternative to IEEE 754 with quire accumulators
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="bg-surface-dark-overlay rounded-lg p-4 font-mono text-sm">
-            <p className="text-content-dark-secondary mb-2">Exact dot product with quire accumulator:</p>
+          <div className="bg-carbon-gray-90 rounded-lg p-4 font-mono text-carbon-sm">
+            <p className="text-carbon-gray-40 mb-2">Exact dot product with quire accumulator:</p>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Posit32 Values</p>
-                <p className="text-brand-cyan text-lg">p₁ = 3.14, p₂ = 2.71</p>
+                <p className="text-carbon-gray-50">Posit32 Values</p>
+                <p className="text-carbon-blue-40 text-lg">p₁ = 3.14, p₂ = 2.71</p>
               </div>
-              <div className="text-2xl text-content-dark-tertiary">→</div>
+              <div className="text-2xl text-carbon-gray-60">→</div>
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Quire Accumulation</p>
-                <p className="text-brand-green text-lg">quire.add(p₁ * p₂)</p>
+                <p className="text-carbon-gray-50">Quire Accumulation</p>
+                <p className="text-status-success text-lg">quire.add(p₁ * p₂)</p>
               </div>
             </div>
-            <div className="mt-4 pt-4 border-t border-border-dark">
-              <p className="text-content-dark-tertiary">
+            <div className="mt-4 pt-4 border-t border-carbon-gray-70">
+              <p className="text-carbon-gray-50">
                 Quire accumulators provide exact dot products without rounding errors
               </p>
             </div>

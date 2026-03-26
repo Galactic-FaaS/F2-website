@@ -13,9 +13,6 @@ import {
   Tooltip, 
   ResponsiveContainer,
   ReferenceLine,
-  ScatterChart,
-  Scatter,
-  ZAxis,
   ComposedChart,
   Area
 } from 'recharts';
@@ -75,13 +72,6 @@ interface TrainingData {
   gradient: number;
 }
 
-interface WeightData {
-  layer: string;
-  neuron: number;
-  weight: number;
-  gradient: number;
-}
-
 export function DifferentiableDemo() {
   const [isRunning, setIsRunning] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -104,27 +94,6 @@ export function DifferentiableDemo() {
     return data;
   };
 
-  // Generate weight visualization data
-  const generateWeightData = (): WeightData[] => {
-    const data: WeightData[] = [];
-    const layers = ['Input→Hidden', 'Hidden→Output'];
-    const neurons = [8, 2];
-    
-    layers.forEach((layer, layerIdx) => {
-      for (let n = 0; n < neurons[layerIdx]; n++) {
-        const baseWeight = layerIdx === 0 ? 0.3 * Math.sin(n * 0.8) : 0.2 * Math.cos(n * 1.2);
-        const gradient = 0.1 * Math.exp(-n * 0.3);
-        data.push({
-          layer,
-          neuron: n,
-          weight: parseFloat((baseWeight + (Math.random() - 0.5) * 0.1).toFixed(3)),
-          gradient: parseFloat(gradient.toFixed(4))
-        });
-      }
-    });
-    return data;
-  };
-
   const runComputation = () => {
     setIsRunning(true);
     
@@ -138,68 +107,70 @@ export function DifferentiableDemo() {
     <div className="space-y-6">
       {/* AD Results */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">f(2.0)</p>
-            <p className="text-2xl font-mono text-brand-cyan mt-1">4.909</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">f(2.0)</p>
+            <p className="text-2xl font-mono text-carbon-blue-40 mt-1">4.909</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">grad(f, 2.0)</p>
-            <p className="text-2xl font-mono text-brand-green mt-1">4.583</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">grad(f, 2.0)</p>
+            <p className="text-2xl font-mono text-status-success mt-1">4.583</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">hessian(f, 2.0)</p>
-            <p className="text-2xl font-mono text-brand-purple mt-1">1.909</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">hessian(f, 2.0)</p>
+            <p className="text-2xl font-mono text-accent-purple mt-1">1.909</p>
           </CardContent>
         </Card>
-        <Card variant="outlined" padding="sm">
+        <Card variant="outlined" padding="sm" className="border-carbon-gray-80">
           <CardContent className="pt-4">
-            <p className="text-xs text-content-dark-tertiary uppercase tracking-wide">AD Operations</p>
-            <p className="text-2xl font-mono text-amber-500 mt-1">23</p>
+            <p className="text-carbon-xs text-carbon-gray-50 uppercase tracking-wide">AD Operations</p>
+            <p className="text-2xl font-mono text-status-warning mt-1">23</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Gradient Descent Visualization */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Gradient Descent Optimization</CardTitle>
-          <CardDescription>Finding minimum of f(x) = x² + sin(x)</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Gradient Descent Optimization</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Finding minimum of f(x) = x² + sin(x)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={generateTrainingData()}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis 
                   dataKey="epoch" 
-                  stroke="#94A3B8"
-                  label={{ value: 'Iteration', position: 'bottom', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'Iteration', position: 'bottom', fill: '#6B6B6B' }}
                 />
                 <YAxis 
                   yAxisId="left"
-                  stroke="#94A3B8"
+                  stroke="#6B6B6B"
                   domain={[0, 3]}
-                  label={{ value: 'Loss', angle: -90, position: 'insideLeft', fill: '#94A3B8' }}
+                  label={{ value: 'Loss', angle: -90, position: 'insideLeft', fill: '#6B6B6B' }}
                 />
                 <YAxis 
                   yAxisId="right"
                   orientation="right"
-                  stroke="#94A3B8"
+                  stroke="#6B6B6B"
                   domain={[0, 1]}
-                  label={{ value: 'Accuracy', angle: 90, position: 'insideRight', fill: '#94A3B8' }}
+                  label={{ value: 'Accuracy', angle: 90, position: 'insideRight', fill: '#6B6B6B' }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
                 <Area 
                   yAxisId="left"
@@ -224,46 +195,48 @@ export function DifferentiableDemo() {
           </div>
           <div className="flex gap-6 mt-4 justify-center">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-cyan" />
-              <span className="text-sm text-content-dark-secondary">Function Value</span>
+              <div className="w-3 h-3 rounded-full bg-carbon-blue-40" />
+              <span className="text-carbon-sm text-carbon-gray-40">Function Value</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-brand-green" />
-              <span className="text-sm text-content-dark-secondary">Convergence</span>
+              <div className="w-3 h-3 rounded-full bg-status-success" />
+              <span className="text-carbon-sm text-carbon-gray-40">Convergence</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Gradient Flow Visualization */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Gradient Flow</CardTitle>
-          <CardDescription>Gradient magnitudes during optimization</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Gradient Flow</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            Gradient magnitudes during optimization
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-48">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={generateTrainingData().slice(0, 30)}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#3D3D3D" />
                 <XAxis 
                   dataKey="epoch" 
-                  stroke="#94A3B8"
-                  label={{ value: 'Iteration', position: 'bottom', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'Iteration', position: 'bottom', fill: '#6B6B6B' }}
                 />
                 <YAxis 
-                  stroke="#94A3B8"
-                  label={{ value: 'Gradient', angle: -90, position: 'insideLeft', fill: '#94A3B8' }}
+                  stroke="#6B6B6B"
+                  label={{ value: 'Gradient', angle: -90, position: 'insideLeft', fill: '#6B6B6B' }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: '#1E293B', 
-                    border: '1px solid #334155',
+                    backgroundColor: '#1A1A1A', 
+                    border: '1px solid #3D3D3D',
                     borderRadius: '8px'
                   }}
-                  labelStyle={{ color: '#F8FAFC' }}
+                  labelStyle={{ color: '#F4F4F4' }}
                 />
-                <ReferenceLine y={0.01} stroke="#64748B" strokeDasharray="3 3" />
+                <ReferenceLine y={0.01} stroke="#5A5A5A" strokeDasharray="3 3" />
                 <Line 
                   type="monotone" 
                   dataKey="gradient" 
@@ -275,9 +248,9 @@ export function DifferentiableDemo() {
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 p-3 bg-surface-dark-overlay rounded-lg">
-            <p className="text-sm text-content-dark-secondary">
-              <span className="text-brand-purple font-semibold">Tape-based AD:</span> Reverse-mode automatic differentiation 
+          <div className="mt-4 p-3 bg-carbon-gray-90 rounded-lg">
+            <p className="text-carbon-sm text-carbon-gray-40">
+              <span className="text-accent-purple font-semibold">Tape-based AD:</span> Reverse-mode automatic differentiation 
               builds a computation graph during the forward pass and propagates gradients backward.
             </p>
           </div>
@@ -285,10 +258,12 @@ export function DifferentiableDemo() {
       </Card>
 
       {/* Supported Operations */}
-      <Card variant="default" padding="md">
+      <Card variant="default" padding="md" className="border-carbon-gray-80">
         <CardHeader>
-          <CardTitle>Supported AD Operations (23 Total)</CardTitle>
-          <CardDescription>All operations support automatic differentiation</CardDescription>
+          <CardTitle className="text-carbon-gray-10">Supported AD Operations (23 Total)</CardTitle>
+          <CardDescription className="text-carbon-gray-40">
+            All operations support automatic differentiation
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -319,10 +294,10 @@ export function DifferentiableDemo() {
             ].map((op, idx) => (
               <div 
                 key={idx}
-                className="flex items-center gap-2 p-2 bg-surface-dark-overlay rounded border border-border-dark"
+                className="flex items-center gap-2 p-2 bg-carbon-gray-90 rounded border border-carbon-gray-70"
               >
-                <Badge variant="default" className="font-mono text-xs">{op.name}</Badge>
-                <span className="text-xs text-content-dark-tertiary">{op.cat}</span>
+                <Badge variant="secondary" className="font-mono text-carbon-xs">{op.name}</Badge>
+                <span className="text-carbon-xs text-carbon-gray-50">{op.cat}</span>
               </div>
             ))}
           </div>
@@ -330,32 +305,32 @@ export function DifferentiableDemo() {
       </Card>
 
       {/* AD Functions Summary */}
-      <Card variant="outlined" padding="md">
+      <Card variant="outlined" padding="md" className="border-carbon-blue-60/30">
         <CardHeader>
-          <CardTitle className="text-brand-cyan">Automatic Differentiation API</CardTitle>
+          <CardTitle className="text-carbon-blue-40">Automatic Differentiation API</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">grad(f, x)</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Compute gradient of f at x</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">grad(f, x)</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Compute gradient of f at x</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">jacobian(f, (x, y))</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Compute Jacobian matrix</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">jacobian(f, (x, y))</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Compute Jacobian matrix</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">hessian(f, x)</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Compute Hessian (2nd derivative)</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">hessian(f, x)</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Compute Hessian (2nd derivative)</p>
             </div>
-            <div className="p-3 bg-surface-dark-overlay rounded-lg">
-              <p className="font-mono text-brand-cyan">differentiable function</p>
-              <p className="text-sm text-content-dark-secondary mt-1">Declare AD-compatible function</p>
+            <div className="p-3 bg-carbon-gray-90 rounded-lg">
+              <p className="font-mono text-carbon-blue-40">differentiable function</p>
+              <p className="text-carbon-sm text-carbon-gray-40 mt-1">Declare AD-compatible function</p>
             </div>
           </div>
-          <div className="mt-4 p-3 bg-surface-dark-overlay rounded-lg">
-            <p className="text-sm text-content-dark-secondary">
-              <span className="text-brand-green font-semibold">Status:</span> Production-ready. 
+          <div className="mt-4 p-3 bg-carbon-gray-90 rounded-lg">
+            <p className="text-carbon-sm text-carbon-gray-40">
+              <span className="text-status-success font-semibold">Status:</span> Production-ready. 
               Tape-based reverse-mode AD with full support for control flow and nested differentiation.
             </p>
           </div>

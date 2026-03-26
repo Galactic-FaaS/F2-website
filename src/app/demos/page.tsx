@@ -14,7 +14,8 @@ import {
   Brain, 
   ArrowRight, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Play
 } from 'lucide-react';
 
 type DemoType = 'arithmetic' | 'symbolic' | 'probabilistic' | 'differentiable';
@@ -25,9 +26,10 @@ const demoInfo = {
     title: 'Advanced Arithmetic',
     description: 'Explore arbitrary precision, interval arithmetic, and dual number computation',
     icon: Calculator,
-    color: 'text-brand-cyan',
-    bgColor: 'bg-brand-cyan/10',
-    borderColor: 'border-brand-cyan/30',
+    color: 'carbon-blue-40',
+    bgColor: 'bg-carbon-blue-60/10',
+    borderColor: 'border-carbon-blue-60/30',
+    gradient: 'from-carbon-blue-40 to-accent-cyan',
     features: [
       'Arbitrary precision (up to 256-bit)',
       'Interval arithmetic with guaranteed bounds',
@@ -40,9 +42,10 @@ const demoInfo = {
     title: 'Symbolic Computation',
     description: 'Computer algebra system with differentiation, simplification, and equation solving',
     icon: FunctionSquare,
-    color: 'text-brand-purple',
-    bgColor: 'bg-brand-purple/10',
-    borderColor: 'border-brand-purple/30',
+    color: 'accent-purple',
+    bgColor: 'bg-accent-purple/10',
+    borderColor: 'border-accent-purple/30',
+    gradient: 'from-accent-purple to-carbon-blue-60',
     features: [
       'Symbolic differentiation',
       'Expression simplification',
@@ -55,9 +58,10 @@ const demoInfo = {
     title: 'Probabilistic Programming',
     description: 'Bayesian inference with MCMC sampling and distribution visualization',
     icon: GitBranch,
-    color: 'text-brand-green',
-    bgColor: 'bg-brand-green/10',
-    borderColor: 'border-brand-green/30',
+    color: 'status-success',
+    bgColor: 'bg-status-success/10',
+    borderColor: 'border-status-success/30',
+    gradient: 'from-status-success to-accent-teal',
     features: [
       'Bayesian inference',
       'MCMC sampling algorithms',
@@ -70,9 +74,10 @@ const demoInfo = {
     title: 'Differentiable Programming',
     description: 'Automatic differentiation for neural networks and optimization',
     icon: Brain,
-    color: 'text-amber-500',
-    bgColor: 'bg-amber-500/10',
-    borderColor: 'border-amber-500/30',
+    color: 'status-warning',
+    bgColor: 'bg-status-warning/10',
+    borderColor: 'border-status-warning/30',
+    gradient: 'from-status-warning to-amber-500',
     features: [
       'Automatic differentiation',
       'Neural network layers',
@@ -88,38 +93,55 @@ function DemosContent() {
   const demos = Object.values(demoInfo);
 
   return (
-    <div className="min-h-screen bg-surface-dark-primary">
+    <div className="min-h-screen bg-carbon-gray-100">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-mesh opacity-50" />
-        <div className="absolute inset-0 bg-gradient-radial from-brand-cyan/5 to-transparent" />
+      <section className="relative py-24 overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-carbon-gray-100 via-carbon-gray-90 to-carbon-blue-100" />
+        <div className="absolute inset-0 hero-mesh opacity-40" />
         
-        <Container className="relative">
-          <div className="max-w-3xl mx-auto text-center">
-            <Badge variant="primary" className="mb-4">
-              <Sparkles className="w-3 h-3 mr-1" />
+        {/* Decorative Elements */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-carbon-blue-60/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-purple/10 rounded-full blur-3xl" />
+        
+        <Container className="relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge variant="primary" className="mb-6">
+              <Sparkles className="h-3 w-3 mr-1" />
               Interactive Demos
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold font-heading text-content-dark-primary mb-6">
-              Explore Fortran² Capabilities
+            <h1 className="text-carbon-display-01 font-light text-carbon-gray-10">
+              Explore
+              <span className="block mt-2 bg-gradient-to-r from-carbon-blue-40 via-accent-cyan to-accent-teal bg-clip-text text-transparent">
+                Fortran² Capabilities
+              </span>
             </h1>
-            <p className="text-xl text-content-dark-secondary mb-8">
+            <p className="mt-6 text-carbon-lg text-carbon-gray-30 max-w-2xl mx-auto">
               Experience the power of Fortran² through interactive computation demos. 
               See firsthand how advanced mathematical systems work in practice.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              {demos.map((demo) => (
+          </div>
+        </Container>
+      </section>
+
+      {/* Demo Type Selector */}
+      <section className="py-8 bg-carbon-gray-90 border-y border-carbon-gray-80">
+        <Container>
+          <div className="flex flex-wrap justify-center gap-3">
+            {demos.map((demo) => {
+              const Icon = demo.icon;
+              return (
                 <Button
                   key={demo.id}
                   variant={activeDemo === demo.id ? 'primary' : 'secondary'}
                   onClick={() => setActiveDemo(activeDemo === demo.id ? null : demo.id)}
                   className="gap-2"
                 >
-                  <demo.icon className="w-4 h-4" />
+                  <Icon className="h-4 w-4" />
                   {demo.title}
                 </Button>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </Container>
       </section>
@@ -129,57 +151,70 @@ function DemosContent() {
         <Container>
           {activeDemo ? (
             <div className="space-y-8">
+              {/* Back Button */}
               <div className="flex items-center gap-4 mb-8">
                 <Button 
                   variant="ghost" 
                   onClick={() => setActiveDemo(null)}
-                  className="gap-2"
+                  className="gap-2 text-carbon-gray-40 hover:text-carbon-gray-10"
                 >
-                  <ChevronRight className="w-4 h-4 rotate-180" />
+                  <ChevronRight className="h-4 w-4 rotate-180" />
                   Back to all demos
                 </Button>
               </div>
               
+              {/* Demo Component */}
               {activeDemo === 'arithmetic' && <ArithmeticDemo />}
               {activeDemo === 'symbolic' && <SymbolicDemo />}
               {activeDemo === 'probabilistic' && <ProbabilisticDemo />}
               {activeDemo === 'differentiable' && <DifferentiableDemo />}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            /* Demo Cards Grid */
+            <div className="grid gap-6 md:grid-cols-2">
               {demos.map((demo) => {
                 const Icon = demo.icon;
                 return (
                   <Card 
                     key={demo.id}
-                    variant="outlined"
-                    className={`group cursor-pointer transition-all duration-300 hover:shadow-glow-sm ${demo.borderColor}`}
+                    hover
+                    className={`group cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-carbon-blue-60/10 ${demo.borderColor} relative overflow-hidden`}
                     onClick={() => setActiveDemo(demo.id)}
                   >
-                    <CardHeader>
+                    {/* Hover Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-carbon-blue-60/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    <CardHeader className="relative z-10">
                       <div className="flex items-center justify-between">
-                        <div className={`p-3 rounded-lg ${demo.bgColor}`}>
-                          <Icon className={`w-6 h-6 ${demo.color}`} />
+                        <div className={`p-3 rounded-xl ${demo.bgColor} group-hover:scale-105 transition-transform`}>
+                          <Icon className={`w-6 h-6 text-${demo.color}`} />
                         </div>
-                        <ArrowRight className="w-5 h-5 text-content-dark-tertiary group-hover:text-brand-cyan group-hover:translate-x-1 transition-all" />
+                        <div className="h-8 w-8 rounded-lg bg-carbon-gray-80 group-hover:bg-carbon-blue-60/20 flex items-center justify-center transition-colors">
+                          <Play className="h-4 w-4 text-carbon-gray-50 group-hover:text-carbon-blue-40 transition-colors" />
+                        </div>
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <CardTitle className="text-xl mb-2">{demo.title}</CardTitle>
-                      <CardDescription className="text-content-dark-secondary">
+                    <CardContent className="relative z-10">
+                      <CardTitle className="text-carbon-xl font-semibold text-carbon-gray-10 mb-2 group-hover:text-white transition-colors">
+                        {demo.title}
+                      </CardTitle>
+                      <CardDescription className="text-carbon-gray-40">
                         {demo.description}
                       </CardDescription>
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="relative z-10">
                       <ul className="space-y-2">
                         {demo.features.map((feature, idx) => (
-                          <li key={idx} className="flex items-center gap-2 text-sm text-content-dark-tertiary">
-                            <div className={`w-1.5 h-1.5 rounded-full ${demo.color.replace('text-', 'bg-')}`} />
+                          <li key={idx} className="flex items-center gap-2 text-carbon-sm text-carbon-gray-50">
+                            <span className={`h-1.5 w-1.5 rounded-full bg-${demo.color}`} />
                             {feature}
                           </li>
                         ))}
                       </ul>
                     </CardFooter>
+                    
+                    {/* Bottom Border Animation */}
+                    <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${demo.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
                   </Card>
                 );
               })}
@@ -190,29 +225,37 @@ function DemosContent() {
 
       {/* Getting Started Section */}
       {!activeDemo && (
-        <section className="py-16 border-t border-border-dark">
-          <Container>
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl font-bold font-heading text-content-dark-primary mb-4">
-                Ready to Try Fortran²?
-              </h2>
-              <p className="text-content-dark-secondary mb-8">
-                Download the latest version and start exploring advanced numerical computing capabilities.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/downloads">
-                  <Button variant="primary" size="lg" className="gap-2">
-                    Download Fortran²
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/docs">
-                  <Button variant="secondary" size="lg">
-                    Read Documentation
-                  </Button>
-                </Link>
-              </div>
-            </div>
+        <section className="py-24 border-t border-carbon-gray-80">
+          <div className="absolute inset-0 bg-gradient-to-br from-carbon-gray-90 via-carbon-blue-100 to-carbon-gray-100" />
+          <div className="absolute inset-0 hero-mesh opacity-20" />
+          
+          <Container className="relative z-10">
+            <Card className="overflow-hidden border-carbon-blue-60/30 bg-carbon-gray-90/50 backdrop-blur-xl">
+              <CardContent className="p-12 text-center">
+                <div className="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-carbon-blue-60/10 mb-6">
+                  <Sparkles className="h-8 w-8 text-carbon-blue-40" />
+                </div>
+                <h2 className="text-carbon-4xl font-semibold text-carbon-gray-10">
+                  Ready to Try Fortran²?
+                </h2>
+                <p className="mt-4 text-carbon-lg text-carbon-gray-30 max-w-2xl mx-auto">
+                  Download the latest version and start exploring advanced numerical computing capabilities.
+                </p>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+                  <Link href="/downloads">
+                    <Button size="lg" className="gap-2 min-w-[200px]">
+                      Download Fortran²
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/docs/v3.0/getting-started">
+                    <Button variant="secondary" size="lg" className="min-w-[200px]">
+                      Read Documentation
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </Container>
         </section>
       )}
