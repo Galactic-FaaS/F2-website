@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowRight, Info, BookOpen } from 'lucide-react';
+import { ArrowRight, Info, BookOpen, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'API Reference - Fortran² Documentation',
@@ -48,284 +48,413 @@ export default function APIReferencePage() {
             
             <div className="grid gap-4 md:grid-cols-2 mb-6">
               <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
-                <h4 className="font-semibold text-content-dark-primary mb-2">Core Modules</h4>
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Core Modules
+                  <Badge variant="primary" className="bg-brand-green/20 text-brand-green text-xs">Production</Badge>
+                </h4>
                 <ul className="text-sm text-content-dark-secondary space-y-1">
-                  <li>• <code className="text-brand-cyan">fortran2</code> - Language core</li>
-                  <li>• <code className="text-brand-cyan">types</code> - Type system</li>
-                  <li>• <code className="text-brand-cyan">io</code> - Input/Output</li>
+                  <li>• <code className="text-brand-cyan">collections</code> - Vec, HashMap, HashSet</li>
+                  <li>• <code className="text-brand-cyan">ieee754</code> - IEEE 754 arithmetic</li>
+                  <li>• <code className="text-brand-cyan">simd</code> - SIMD vectorization</li>
                 </ul>
               </div>
               <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
-                <h4 className="font-semibold text-content-dark-primary mb-2">Computation</h4>
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Arbitrary Precision
+                  <Badge variant="primary" className="bg-brand-green/20 text-brand-green text-xs">Production</Badge>
+                </h4>
                 <ul className="text-sm text-content-dark-secondary space-y-1">
-                  <li>• <code className="text-brand-cyan">bignum</code> - Arbitrary precision</li>
-                  <li>• <code className="text-brand-cyan">interval</code> - Interval arithmetic</li>
+                  <li>• <code className="text-brand-cyan">bigint</code> - Arbitrary precision integers</li>
+                  <li>• <code className="text-brand-cyan">bigfloat</code> - Arbitrary precision floats</li>
+                  <li>• <code className="text-brand-cyan">posit</code> - Posit arithmetic</li>
+                </ul>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Differentiable
+                  <Badge variant="primary" className="bg-brand-green/20 text-brand-green text-xs">Production</Badge>
+                </h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
+                  <li>• <code className="text-brand-cyan">autodiff</code> - Automatic differentiation</li>
                   <li>• <code className="text-brand-cyan">dual</code> - Dual numbers</li>
+                  <li>• <code className="text-brand-cyan">grad</code> - Gradient computation</li>
                 </ul>
               </div>
               <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
-                <h4 className="font-semibold text-content-dark-primary mb-2">Math & Science</h4>
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Probabilistic
+                  <Badge variant="primary" className="bg-brand-green/20 text-brand-green text-xs">Production</Badge>
+                </h4>
                 <ul className="text-sm text-content-dark-secondary space-y-1">
-                  <li>• <code className="text-brand-cyan">symbolic</code> - Symbolic math</li>
-                  <li>• <code className="text-brand-cyan">prob</code> - Probability</li>
-                  <li>• <code className="text-brand-cyan">linalg</code> - Linear algebra</li>
+                  <li>• <code className="text-brand-cyan">distributions</code> - 15+ distributions</li>
+                  <li>• <code className="text-brand-cyan">mcmc</code> - MCMC samplers</li>
+                  <li>• <code className="text-brand-cyan">variational</code> - Variational inference</li>
                 </ul>
               </div>
               <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
-                <h4 className="font-semibold text-content-dark-primary mb-2">ML & DL</h4>
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Symbolic
+                  <Badge variant="primary" className="bg-amber-500/20 text-amber-500 text-xs">30%</Badge>
+                </h4>
                 <ul className="text-sm text-content-dark-secondary space-y-1">
-                  <li>• <code className="text-brand-cyan">autodiff</code> - Auto differentiation</li>
+                  <li>• <code className="text-brand-cyan">symbolic</code> - Symbolic expressions</li>
+                  <li>• <code className="text-brand-cyan">pattern</code> - Pattern matching</li>
+                </ul>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark-secondary border border-border-dark">
+                <h4 className="font-semibold text-content-dark-primary mb-2 flex items-center gap-2">
+                  Planned
+                  <Badge variant="primary" className="bg-red-500/20 text-red-500 text-xs">Planned</Badge>
+                </h4>
+                <ul className="text-sm text-content-dark-secondary space-y-1">
                   <li>• <code className="text-brand-cyan">nn</code> - Neural networks</li>
-                  <li>• <code className="text-brand-cyan">optim</code> - Optimization</li>
+                  <li>• <code className="text-brand-cyan">gpu</code> - GPU acceleration</li>
+                  <li>• <code className="text-brand-cyan">quantum</code> - Quantum computing</li>
                 </ul>
               </div>
             </div>
           </section>
 
-          {/* Module Reference */}
-          <section id="modules">
+          {/* Collections Module */}
+          <section id="collections">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Module Reference
+              Collections Module
             </h2>
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              bignum - Arbitrary Precision Numbers
-            </h3>
-            <div className="overflow-x-auto mb-6">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-surface-dark-tertiary">
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Name</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Type</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">bigint</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Arbitrary precision integer</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">bigfloat</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Arbitrary precision floating point</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">bigrational</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Exact rational numbers</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
             </div>
-
+            
             <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              symbolic - Symbolic Mathematics
-            </h3>
-            <div className="overflow-x-auto mb-6">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-surface-dark-tertiary">
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Name</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Type</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">symexpr</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Symbolic expression</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">symvar</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">function</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Create symbolic variable</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">simplify</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">function</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Simplify expression</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              prob - Probability & Statistics
-            </h3>
-            <div className="overflow-x-auto mb-6">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="bg-surface-dark-tertiary">
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Name</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Type</th>
-                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">normal_dist</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Normal (Gaussian) distribution</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">gamma_dist</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Gamma distribution</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">poisson_dist</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">type</td>
-                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Poisson distribution</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* Function Reference */}
-          <section id="functions">
-            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Function Reference
-            </h2>
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              Mathematical Functions
+              Vec - Dynamic Arrays
             </h3>
             <CodeBlock
-              code={`! Basic math functions
-use f2_math
-implicit none
+              code={`! Vec - Dynamic growable array
+let v = Vec<integer>()        ! Create empty vector
+v.push(1)                      ! Add elements
+v.push(2)
+v.push(3)
 
-real :: x, result
+print("Length: {v.len()}")     ! Length: 3
+print("First: {v[0]}")         ! First: 1
 
-! Trigonometric
-x = 0.5
-result = sin(x)        ! Sine
-result = cos(x)        ! Cosine
-result = tan(x)        ! Tangent
-
-result = asin(x)       ! Arcsine
-result = acos(x)       ! Arccosine
-result = atan(x)       ! Arctangent
-
-! Hyperbolic
-result = sinh(x)       ! Hyperbolic sine
-result = cosh(x)       ! Hyperbolic cosine
-result = tanh(x)       ! Hyperbolic tangent
-
-! Exponential & Logarithmic
-result = exp(x)        ! Exponential
-result = log(x)        ! Natural log
-result = log10(x)      ! Base-10 log
-
-! Power & Root
-result = sqrt(x)       ! Square root
-result = cbrt(x)       ! Cube root
-result = x ** 2.0      ! Power`}
+let sum = v.iter().sum()       ! Sum all elements
+let doubled = v.map((x) => x * 2)  ! Map function`}
               language="fortran"
+              filename="vec.f2"
             />
 
             <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Linear Algebra
+              HashMap - Key-Value Storage
             </h3>
             <CodeBlock
-              code={`use linalg
-implicit none
+              code={`! HashMap - Key-value pairs
+let map = HashMap<string, integer>()
+map.insert("one", 1)
+map.insert("two", 2)
+map.insert("three", 3)
 
-real, dimension(3,3) :: A, B
-real, dimension(3) :: x, y
-real :: dot_prod
+let value = map.get("two")     ! Returns 2
+map.remove("one")
 
-! Matrix operations
-A = matmul(A, B)       ! Matrix multiplication
-A = transpose(A)       ! Transpose
-A = inverse(A)        ! Matrix inverse
-real :: det = det(A)   ! Determinant
-
-! Vector operations
-dot_prod = dot(x, y)   ! Dot product
-x = cross(y, z)       ! Cross product (3D)
-
-! Solve linear system Ax = b
-x = solve(A, b)
-
-! Eigenvalues and eigenvectors
-call eigenvalues(A, values, vectors)`}
+for (key, value) in map {
+    print("{key} => {value}")
+}`}
               language="fortran"
-            />
-          </section>
-
-          {/* Type Definitions */}
-          <section id="types">
-            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Type Definitions
-            </h2>
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
-              Tensor Type
-            </h3>
-            <CodeBlock
-              code={`use autodiff
-implicit none
-
-type(tensor) :: t, t1, t2
-integer, dimension(:) :: shape
-
-! Create tensors
-t = tensor(3.14)                    ! Scalar
-t = tensor([1.0, 2.0, 3.0])        ! 1D array
-t = tensor(reshape([1,2,3,4], [2,2]))  ! 2D array
-
-! Tensor properties
-shape = t%shape                     ! Get shape
-t%requires_grad = .true.           ! Enable gradients
-
-! Operations
-t1 = t + 2.0                       ! Addition
-t1 = t * t                         ! Element-wise multiplication
-t1 = matmul(t1, t2)                ! Matrix multiplication
-
-! Indexing
-t1 = t(1, :)                       ! First row
-t1 = t(:, 2)                       ! Second column`}
-              language="fortran"
+              filename="hashmap.f2"
             />
 
             <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Custom Types
+              HashSet - Unique Elements
             </h3>
             <CodeBlock
-              code={`! User-defined type for complex numbers
-type :: complex_number
-  real :: re
-  real :: im
-contains
-  procedure :: add => complex_add
-  procedure :: multiply => complex_multiply
-  procedure :: abs => complex_abs
-end type complex_number
+              code={`! HashSet - Unique element collection
+let set = HashSet<integer>()
+set.insert(1)
+set.insert(2)
+set.insert(2)                   ! Duplicate ignored
 
-! Define operations
-complex_number procedure complex_add
-  type(complex_number) :: result
-  result%re = self%re + other%re
-  result%im = self%im + other%im
-end procedure`}
+print("Contains 1: {set.contains(1)}")  ! true
+print("Size: {set.len()}")               ! 2`}
               language="fortran"
+              filename="hashset.f2"
+            />
+          </section>
+
+          {/* IEEE 754 Module */}
+          <section id="ieee754">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              IEEE 754 Arithmetic Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
+            </div>
+
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-surface-dark-tertiary">
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Type</th>
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Size</th>
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">real(binary16)</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">16-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Half precision</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">real(binary32)</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">32-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Single precision</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">real(binary64)</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">64-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Double precision</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">real(decimal64)</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">64-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Decimal floating point</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <CodeBlock
+              code={`! IEEE 754 types
+let x16 = 1.0e0_binary16      ! Half precision
+let x32 = 1.0e0_binary32      ! Single precision
+let x64 = 1.0e0_binary64      ! Double precision
+let xd64 = 1.0e0_decimal64    ! Decimal
+
+! Special values
+let inf = real(binary64).infinity
+let nan_val = real(binary64).nan
+let neg_zero = real(binary64).negative_zero`}
+              language="fortran"
+              filename="ieee754.f2"
+            />
+          </section>
+
+          {/* BigInt/BigFloat Module */}
+          <section id="bignum">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Arbitrary Precision Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
+            </div>
+
+            <CodeBlock
+              code={`! BigInt - Arbitrary precision integers
+let big = BigInt("123456789012345678901234567890")
+let result = big * big * big    ! No overflow!
+
+! BigFloat - Arbitrary precision floats
+let pi = BigFloat("3.141592653589793238462643383279")
+pi.set_precision(1000)          ! 1000 bits of precision
+
+! Assembly-optimized kernels for performance
+let a = BigFloat(1.0)
+let b = BigFloat(2.0)
+let c = a + b                    ! Uses optimized kernel`}
+              language="fortran"
+              filename="bignum.f2"
+            />
+          </section>
+
+          {/* Posit Module */}
+          <section id="posit">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Posit Arithmetic Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
+            </div>
+
+            <div className="overflow-x-auto mb-6">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="bg-surface-dark-tertiary">
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Type</th>
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Size</th>
+                    <th className="border border-border-dark px-4 py-2 text-left text-content-dark-primary">Features</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">posit8</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">8-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Embedded systems</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">posit16</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">16-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Better than float16</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">posit32</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">32-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">Alternative to float32</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary font-mono">posit64</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">64-bit</td>
+                    <td className="border border-border-dark px-4 py-2 text-content-dark-secondary">High precision</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <CodeBlock
+              code={`! Posit arithmetic with quire accumulators
+let p = posit32(3.14159)
+let q = posit32(2.71828)
+
+! Quire accumulator for exact dot products
+let quire = quire32()
+quire.add(p * q)               ! Exact accumulation
+let result = quire.to_posit()  ! Convert back to posit`}
+              language="fortran"
+              filename="posit.f2"
+            />
+          </section>
+
+          {/* Autodiff Module */}
+          <section id="autodiff">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Automatic Differentiation Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
+            </div>
+
+            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mb-3">
+              Supported Operations (23 total)
+            </h3>
+            <div className="grid gap-2 md:grid-cols-4 mb-4">
+              {['sin', 'cos', 'tan', 'exp', 'log', 'sqrt', 'pow', 'abs', 'sinh', 'cosh', 'tanh', 'asin', 'acos', 'atan', 'erf', 'erfc', 'relu', 'sigmoid', 'softplus', 'add', 'sub', 'mul', 'div'].map(op => (
+                <div key={op} className="p-2 rounded bg-surface-dark text-center text-sm text-content-dark-secondary font-mono">
+                  {op}
+                </div>
+              ))}
+            </div>
+
+            <CodeBlock
+              code={`! Mark function as differentiable
+differentiable function f(x)
+    real, intent(in) :: x
+    f = x**2 + sin(x) * exp(x)
+end function
+
+! Compute gradients
+let df = grad(f)               ! Gradient function
+let h = hessian(f)             ! Hessian function
+let j = jacobian(f)            ! Jacobian function
+
+! Usage
+let x = 1.0
+let gradient = df(x)           ! df/dx at x=1`}
+              language="fortran"
+              filename="autodiff.f2"
+            />
+          </section>
+
+          {/* Distributions Module */}
+          <section id="distributions">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Probability Distributions Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> 15+ Distributions
+              </Badge>
+            </div>
+
+            <div className="grid gap-2 md:grid-cols-3 mb-4">
+              {['Normal', 'Beta', 'Gamma', 'Exponential', 'Uniform', 'LogNormal', 'Bernoulli', 'Poisson', 'Binomial', 'Categorical', 'HalfCauchy', 'StudentT', 'ChiSquared', 'Dirichlet', 'Multinomial'].map(dist => (
+                <div key={dist} className="p-2 rounded bg-surface-dark text-center text-sm text-content-dark-secondary font-mono">
+                  {dist}
+                </div>
+              ))}
+            </div>
+
+            <CodeBlock
+              code={`! Create and use distributions
+let normal = Normal(mean=0.0, std=1.0)
+let x = normal.sample()        ! Draw sample
+let p = normal.pdf(x)          ! Probability density
+let cdf = normal.cdf(x)        ! Cumulative distribution
+
+! Probabilistic model definition
+probabilistic function model(data)
+    let theta = sample(Beta(2.0, 2.0))
+    for d in data {
+        observe(Bernoulli(theta), d)
+    }
+    return theta
+end function
+
+! Inference
+let posterior = infer(model, data, method="NUTS", n_samples=10000)`}
+              language="fortran"
+              filename="distributions.f2"
+            />
+          </section>
+
+          {/* SIMD Module */}
+          <section id="simd">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              SIMD Vectorization Module
+            </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-brand-green/20 text-brand-green">
+                <CheckCircle2 className="h-3 w-3 mr-1" /> Production Ready
+              </Badge>
+            </div>
+
+            <CodeBlock
+              code={`! SIMD vectorized operations
+let a = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]
+let b = [8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0]
+
+! Automatic SIMD vectorization
+let c = a + b                   ! AVX-512 or ARM NEON
+
+! Explicit SIMD control
+#![simd(vector_width=512)]
+let d = a * b + a.sin()
+
+! Check CPU features
+if cpu_supports("AVX-512") {
+    print("AVX-512 available")
+}`}
+              language="fortran"
+              filename="simd.f2"
             />
           </section>
 
           {/* Navigation */}
           <nav className="mt-12 flex items-center justify-between border-t border-border-dark pt-8">
             <Link 
-              href="/docs/v3.0/differentiable"
+              href="/docs/v3.0/symbolic-computation"
               className="group flex flex-col items-start"
             >
               <span className="text-sm text-content-dark-tertiary mb-1">Previous</span>
-              <span className="text-brand-cyan group-hover:underline">← Differentiable Programming</span>
+              <span className="text-brand-cyan group-hover:underline">← Symbolic Computation</span>
             </Link>
             <div />
           </nav>

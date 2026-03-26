@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowRight, Info, Sigma } from 'lucide-react';
+import { ArrowRight, Info, AlertTriangle, Construction } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Symbolic Computation - Fortran² Documentation',
@@ -28,15 +28,28 @@ export default function SymbolicComputationPage() {
             <h1 className="text-h1 font-heading font-bold text-content-dark-primary">
               Symbolic Computation
             </h1>
-            <Badge variant="primary" className="bg-brand-purple/20 text-brand-purple">
-              <Sigma className="h-3 w-3 mr-1" /> Core Feature
+            <Badge variant="primary" className="bg-amber-500/20 text-amber-500">
+              <Construction className="h-3 w-3 mr-1" /> 30% Implemented
             </Badge>
           </div>
           <p className="text-lg text-content-dark-secondary">
-            Fortran² provides powerful symbolic mathematics capabilities including expression manipulation, 
-            differentiation, integration, and equation solving.
+            Fortran² provides symbolic mathematics capabilities including expression manipulation, 
+            differentiation, and pattern matching. This module is currently under active development.
           </p>
         </header>
+
+        {/* Implementation Status Warning */}
+        <div className="mb-8 p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
+          <div className="flex items-center gap-2 text-amber-500 mb-2">
+            <AlertTriangle className="h-5 w-5" />
+            <span className="font-medium">Work in Progress</span>
+          </div>
+          <p className="text-sm text-content-dark-secondary">
+            The symbolic computation module is approximately 30% complete. Basic expression manipulation 
+            and pattern matching are available, but advanced features like integration and differential 
+            equation solving are still being implemented.
+          </p>
+        </div>
 
         {/* Content */}
         <div className="space-y-12">
@@ -47,299 +60,217 @@ export default function SymbolicComputationPage() {
             </h2>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
               The symbolic module enables exact mathematical computations without numerical approximation. 
-              This is essential for:
+              When complete, this will support:
             </p>
             <ul className="space-y-2 text-content-dark-secondary ml-6">
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Deriving analytical solutions to differential equations</span>
+                <span>Symbolic expression representation and manipulation</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Computing exact derivatives for optimization</span>
+                <span>Pattern matching for expression transformation</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Simplifying mathematical expressions</span>
+                <span>Symbolic differentiation (planned)</span>
               </li>
               <li className="flex items-center gap-2">
                 <ArrowRight className="h-4 w-4 text-brand-cyan" />
-                <span>Solving equations symbolically</span>
+                <span>Equation solving (planned)</span>
               </li>
             </ul>
           </section>
 
-          {/* Symbolic Expressions */}
+          {/* Symbolic Function Definition */}
+          <section id="symbolic-functions">
+            <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
+              Symbolic Functions
+            </h2>
+            <p className="text-content-dark-secondary leading-relaxed mb-4">
+              Define symbolic functions using the <code className="text-brand-cyan">symbolic</code> keyword 
+              with pattern matching:
+            </p>
+
+            <CodeBlock
+              code={`! Define a symbolic function with pattern matching
+symbolic function simplify(expr)
+    match expr {
+        case Add(x, y) when x == 0 => y           ! 0 + y = y
+        case Add(x, y) when y == 0 => x           ! x + 0 = x
+        case Mul(x, y) when x == 1 => y           ! 1 * y = y
+        case Mul(x, y) when x == 0 => 0           ! 0 * y = 0
+        case Mul(x, y) when y == 1 => x           ! x * 1 = x
+        case Pow(x, n) when n == 0 => 1           ! x^0 = 1
+        case Pow(x, n) when n == 1 => x           ! x^1 = x
+        case _ => expr                             ! No simplification
+    }
+end function`}
+              language="fortran"
+              filename="simplify.f2"
+            />
+          </section>
+
+          {/* Expression Trees */}
           <section id="expressions">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Symbolic Expressions
+              Expression Trees
             </h2>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Create and manipulate symbolic expressions using the <code className="text-brand-cyan">symbolic</code> module.
+              Symbolic expressions are represented as trees that can be constructed and manipulated:
             </p>
 
             <CodeBlock
-              code={`use symbolic
-implicit none
+              code={`! Create symbolic expressions
+let x = symvar("x")
+let y = symvar("y")
 
-type(symexpr) :: x, y, expr, result
+! Build expressions
+let expr = x**2 + 2*x*y + y**2       ! (x + y)^2
+let trig = sin(x) + cos(y)           ! Trigonometric
+let exp_expr = exp(x) * y            ! Exponential
 
-! Define symbolic variables
-x = symvar("x")
-y = symvar("y")
+! Expression operations (partially implemented)
+let simplified = simplify(expr)
+let expanded = expand(expr)
+let factored = factor(expr)
 
-! Create expressions
-expr = x**2 + 2*x*y + y**2       ! (x + y)^2
-expr = sin(x) + cos(y)           ! Trigonometric
-expr = exp(x) * y                 ! Exponential
-expr = log(x) / x                ! Logarithmic
-
-! Simplify expressions
-result = simplify(expr)
-
-! Factor expressions
-result = factor(expr)
-
-! Expand expressions
-result = expand((x + 1)**3)`}
+! String conversion
+print("Expression: {expr}")
+print("LaTeX form: {expr.to_latex()}")`}
               language="fortran"
-            />
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Expression Manipulation
-            </h3>
-            <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, y, expr, subexpr
-
-x = symvar("x")
-y = symvar("y")
-
-! Create complex expression
-expr = (x + y)**2 - (x - y)**2
-
-! Substitution
-subexpr = expr%subs(x, symreal(2.0))  ! Replace x with 2
-
-! Pattern matching
-if (expr%has(x**2)) then
-  print *, "Expression contains x^2"
-end if
-
-! Partial evaluation
-subexpr = expr%eval(y, 1.0)  ! Evaluate at y=1
-
-! Convert to string
-print *, "Expression: ", expr%to_string()
-print *, "LaTeX:      ", expr%to_latex()`}
-              language="fortran"
+              filename="expressions.f2"
             />
           </section>
 
-          {/* Differentiation */}
-          <section id="differentiation">
+          {/* Pattern Matching */}
+          <section id="pattern-matching">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Differentiation
+              Pattern Matching
             </h2>
+            <div className="flex items-center gap-2 mb-4">
+              <Badge variant="primary" className="bg-amber-500/20 text-amber-500">
+                50% Implemented
+              </Badge>
+              <span className="text-sm text-content-dark-tertiary">Pattern matching is partially available</span>
+            </div>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Compute exact derivatives symbolically. This is more accurate than numerical differentiation 
-              and more general than automatic differentiation.
+              Use pattern matching to transform symbolic expressions:
             </p>
 
             <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, y, f, df
-
-! Define variable
-x = symvar("x")
-
-! Differentiate various functions
-f = x**3 + 2*x**2 - 5*x + 1
-df = f%diff(x)                    ! 3*x^2 + 4*x - 5
-
-f = sin(x) * exp(x)
-df = f%diff(x)                    ! exp(x)*sin(x) + exp(x)*cos(x)
-
-f = log(x**2 + 1)
-df = f%diff(x)                    ! 2*x / (x^2 + 1)
-
-! Simplify the result
-df = simplify(df)
-print *, "Derivative: ", df%to_string()`}
+              code={`! Pattern matching for symbolic transformation
+symbolic function derivative(expr, var)
+    match expr {
+        case Const(c) => 0                         ! d/dx(c) = 0
+        case Var(v) when v == var => 1             ! d/dx(x) = 1
+        case Var(v) when v != var => 0             ! d/dx(y) = 0
+        case Add(f, g) => derivative(f, var) + derivative(g, var)
+        case Mul(f, g) => f * derivative(g, var) + g * derivative(f, var)
+        case Pow(f, n) => n * f**(n-1) * derivative(f, var)
+        case Sin(f) => cos(f) * derivative(f, var)
+        case Cos(f) => -sin(f) * derivative(f, var)
+        case Exp(f) => exp(f) * derivative(f, var)
+        case Log(f) => derivative(f, var) / f
+        case _ => error("Unknown expression type")
+    }
+end function`}
               language="fortran"
-            />
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Partial Derivatives
-            </h3>
-            <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, y, z, f, df
-
-! Multi-variable functions
-x = symvar("x")
-y = symvar("y")
-z = symvar("z")
-
-f = x**2 + y**2 + z**2 + 2*x*y*z
-
-! Partial derivatives
-df = f%diff(x)    ! 2*x + 2*y*z
-df = f%diff(y)    ! 2*y + 2*x*z
-df = f%diff(z)    ! 2*z + 2*x*y
-
-! Mixed partials
-df = f%diff(x)%diff(y)  ! 2*z
-df = f%diff(x, 2)      ! Second derivative d²f/dx² = 2`}
-              language="fortran"
+              filename="derivative.f2"
             />
           </section>
 
-          {/* Integration */}
-          <section id="integration">
+          {/* Planned Features */}
+          <section id="planned">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Integration
+              Planned Features
             </h2>
             <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Fortran² can compute both definite and indefinite integrals symbolically.
+              The following features are planned for future releases:
             </p>
 
-            <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, f, F
-
-x = symvar("x")
-
-! Indefinite integrals
-f = x**2
-F = f%integrate(x)               ! x^3/3 + C
-
-f = 1/(x**2 + 1)
-F = f%integrate(x)               ! atan(x) + C
-
-f = sin(x) * exp(x)
-F = f%integrate(x)               ! (e^x * (sin(x) - cos(x))) / 2
-
-! Definite integrals
-F = f%integrate(x, 0.0, 1.0)    ! Integral from 0 to 1
-
-F = (1/x)%integrate(x, 1.0, 2.0) ! ln(2)`}
-              language="fortran"
-            />
-
-            <div className="mt-4 p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
-              <div className="flex items-center gap-2 text-amber-500 mb-2">
-                <Info className="h-4 w-4" />
-                <span className="font-medium">Note</span>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="p-4 rounded-lg bg-surface-dark border border-border-dark">
+                <h4 className="font-medium text-content-dark-primary mb-2">Integration</h4>
+                <p className="text-sm text-content-dark-secondary">
+                  Symbolic definite and indefinite integration using the Risch algorithm.
+                </p>
               </div>
-              <p className="text-sm text-content-dark-secondary">
-                Not all integrals have closed-form symbolic solutions. Fortran² uses the Risch algorithm 
-                and will return a numerical approximation when symbolic integration is not possible.
-              </p>
+              <div className="p-4 rounded-lg bg-surface-dark border border-border-dark">
+                <h4 className="font-medium text-content-dark-primary mb-2">Equation Solving</h4>
+                <p className="text-sm text-content-dark-secondary">
+                  Solve algebraic equations and systems of equations symbolically.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark border border-border-dark">
+                <h4 className="font-medium text-content-dark-primary mb-2">Differential Equations</h4>
+                <p className="text-sm text-content-dark-secondary">
+                  Symbolic solutions to ODEs with initial/boundary conditions.
+                </p>
+              </div>
+              <div className="p-4 rounded-lg bg-surface-dark border border-border-dark">
+                <h4 className="font-medium text-content-dark-primary mb-2">LaTeX Export</h4>
+                <p className="text-sm text-content-dark-secondary">
+                  Convert symbolic expressions to LaTeX notation for documentation.
+                </p>
+              </div>
             </div>
           </section>
 
-          {/* Equation Solving */}
-          <section id="equation-solving">
+          {/* Current Limitations */}
+          <section id="limitations">
             <h2 className="text-h2 font-heading font-semibold text-content-dark-primary mb-4">
-              Equation Solving
+              Current Limitations
             </h2>
-            <p className="text-content-dark-secondary leading-relaxed mb-4">
-              Solve equations and systems of equations symbolically.
-            </p>
+            <div className="p-4 rounded-lg bg-surface-dark border border-border-dark">
+              <ul className="space-y-2 text-content-dark-secondary">
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-1">⚠️</span>
+                  <span>Integration is not yet implemented - use numerical methods</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-1">⚠️</span>
+                  <span>Equation solving is limited to simple polynomial forms</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-1">⚠️</span>
+                  <span>Differential equation solving is not available</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-amber-500 mt-1">⚠️</span>
+                  <span>Pattern matching supports basic expression types only</span>
+                </li>
+              </ul>
+            </div>
 
-            <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, y, eq, solutions
-
-! Solve single equation
-x = symvar("x")
-eq = x**2 - 4
-
-solutions = solve(eq, x)          ! {2, -2}
-
-! Solve with transformations
-eq = sin(x) - 0.5
-solutions = solve(eq, x)          ! {pi/6, 5*pi/6} + 2*pi*n
-
-! Quadratic formula
-eq = a*x**2 + b*x + c            ! Need to use symbolic parameters
-! Note: Would need to define a, b, c as symbolic constants
-
-! Solve systems of equations
-x = symvar("x")
-y = symvar("y")
-
-eq1 = x + y - 3
-eq2 = x - y - 1
-
-solutions = solve_system([eq1, eq2], [x, y])  ! x=2, y=1`}
-              language="fortran"
-            />
-
-            <h3 className="text-h4 font-heading font-medium text-content-dark-primary mt-6 mb-3">
-              Differential Equations
-            </h3>
-            <CodeBlock
-              code={`use symbolic
-implicit none
-
-type(symexpr) :: x, y, y_prime, eq, solution
-type(ode_params) :: params
-
-! Define dependent variable
-x = symvar("x")
-y = symfunction("y", x)
-
-! First order ODE: dy/dx = y
-y_prime = y%diff(x)
-eq = y_prime - y
-
-solution = dsolve(eq, y)
-print *, "Solution: ", solution%to_string()  ! C1 * e^x
-
-! Second order ODE: y'' + y = 0
-y_prime = y%diff(x)
-eq = y_prime%diff(x) + y
-
-solution = dsolve(eq, y)
-print *, "Solution: ", solution%to_string()  ! C1*cos(x) + C2*sin(x)
-
-! With initial conditions
-params%ic(1) = 0.0    ! y(0) = 0
-params%ic(2) = 1.0    ! y'(0) = 1
-
-solution = dsolve(eq, y, params)  ! y = sin(x)`}
-              language="fortran"
-            />
+            <div className="mt-4 p-4 rounded-lg bg-brand-cyan/10 border border-brand-cyan/30">
+              <div className="flex items-center gap-2 text-brand-cyan mb-2">
+                <Info className="h-4 w-4" />
+                <span className="font-medium">Alternative: Automatic Differentiation</span>
+              </div>
+              <p className="text-sm text-content-dark-secondary">
+                For computing derivatives, consider using the <Link href="/docs/v3.0/differentiable" className="text-brand-cyan hover:underline">Differentiable Programming</Link> module, 
+                which is production-ready and supports 23 operations.
+              </p>
+            </div>
           </section>
 
           {/* Navigation */}
           <nav className="mt-12 flex items-center justify-between border-t border-border-dark pt-8">
             <Link 
-              href="/docs/v3.0/advanced-arithmetic"
+              href="/docs/v3.0/probabilistic"
               className="group flex flex-col items-start"
             >
               <span className="text-sm text-content-dark-tertiary mb-1">Previous</span>
-              <span className="text-brand-cyan group-hover:underline">← Advanced Arithmetic</span>
+              <span className="text-brand-cyan group-hover:underline">← Probabilistic Programming</span>
             </Link>
             <Link 
-              href="/docs/v3.0/probabilistic"
+              href="/docs/v3.0/api-reference"
               className="group flex flex-col items-end"
             >
               <span className="text-sm text-content-dark-tertiary mb-1">Next</span>
               <span className="text-brand-cyan group-hover:underline">
-                Probabilistic Programming →
+                API Reference →
               </span>
             </Link>
           </nav>

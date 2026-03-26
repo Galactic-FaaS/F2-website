@@ -19,64 +19,33 @@ import {
 } from 'recharts';
 
 const sampleCode = `! Fortran² Symbolic Computation Demo
-! Computer algebra system with symbolic differentiation and integration
+! Note: Symbolic computation is currently 30% implemented
 
 program symbolic_demo
-    use std::symbolic
-    use std::symbolic::parser
-    use std::symbolic::simplify
-    use std::symbolic::calculus
+    ! Symbolic expressions with pattern matching
+    let x = symbol("x")
+    let y = symbol("y")
     
-    ! Symbolic expression types
-    type(SymbolicExpr) :: f, df, integral, simplified
-    type(SymbolicVar) :: x, y
-    type(Equation) :: eqn
-    type(SolutionSet) :: solutions
+    ! Define symbolic expression
+    let f = x**2 + 2*x + 1
     
-    ! Define symbolic variables
-    x = symbol("x")
-    y = symbol("y")
+    ! Pattern matching for simplification
+    match expand(f) {
+        case (a + b)**2 => a**2 + 2*a*b + b**2
+        case _ => f
+    }
     
-    ! Define f(x) = x² + 2x + 1
-    f = x**2 + 2*x + 1
+    ! Symbolic differentiation (planned)
+    ! let df = diff(f, x)  ! Would give 2*x + 2
     
-    ! Compute derivative: f'(x) = 2x + 2
-    df = differentiate(f, x)
+    ! Symbolic integration (planned)
+    ! let integral = integrate(f, x)  ! Would give x**3/3 + x**2 + x
     
-    ! Compute indefinite integral: ∫f(x)dx = x³/3 + x² + x + C
-    integral = integrate(f, x)
+    ! Equation solving (planned)
+    ! let roots = solve(f .eq. 0, x)  ! Would give x = -1
     
-    ! Simplify: (x + 1)²
-    simplified = simplify(f)
-    
-    ! Solve f(x) = 0 for x
-    eqn = f .eq. 0
-    solutions = solve(eqn, x)  ! Returns x = -1 (double root)
-    
-    ! Print results
-    print *, "Original: f(x) = ", to_string(f)
-    print *, "Derivative: f'(x) = ", to_string(df)
-    print *, "Integral: ∫f(x)dx = ", to_string(integral)
-    print *, "Simplified: ", to_string(simplified)
-    print *, "Roots: ", solutions
-    
-    ! More complex example: trigonometric identity
-    block
-        type(SymbolicExpr) :: trig_expr, trig_simplified
-        trig_expr = sin(x)**2 + cos(x)**2
-        trig_simplified = simplify(trig_expr)  ! Returns 1
-        print *, "sin²(x) + cos²(x) = ", to_string(trig_simplified)
-    end block
-    
-    ! Partial derivatives
-    block
-        type(SymbolicExpr) :: g, dg_dx, dg_dy
-        g = x**2 + x*y + y**2
-        dg_dx = partial_derivative(g, x)  ! 2x + y
-        dg_dy = partial_derivative(g, y)  ! x + 2y
-        print *, "∂g/∂x = ", to_string(dg_dx)
-        print *, "∂g/∂y = ", to_string(dg_dy)
-    end block
+    print("Expression: {f}")
+    print("Status: Symbolic module at 30% implementation")
     
 end program symbolic_demo`;
 
@@ -161,6 +130,18 @@ export function SymbolicDemo() {
 
   const outputContent = results ? (
     <div className="space-y-6">
+      {/* Implementation Status Warning */}
+      <Card variant="outlined" padding="md" className="border-amber-500/50 bg-amber-500/5">
+        <CardContent>
+          <div className="flex items-center gap-3">
+            <Badge variant="warning">⚠️ 30% Implemented</Badge>
+            <p className="text-sm text-content-dark-secondary">
+              Symbolic computation is under active development. Some features shown are planned.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Expression Operations */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card variant="outlined" padding="md">
@@ -190,8 +171,8 @@ export function SymbolicDemo() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card variant="outlined" padding="md">
           <CardHeader>
-            <CardTitle className="text-brand-purple">Derivative</CardTitle>
-            <CardDescription>Automatic differentiation</CardDescription>
+            <CardTitle className="text-brand-purple">Derivative <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
+            <CardDescription>Symbolic differentiation</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-mono text-brand-purple">
@@ -205,7 +186,7 @@ export function SymbolicDemo() {
         
         <Card variant="outlined" padding="md">
           <CardHeader>
-            <CardTitle className="text-brand-cyan">Integral</CardTitle>
+            <CardTitle className="text-brand-cyan">Integral <Badge variant="warning" className="ml-2">Planned</Badge></CardTitle>
             <CardDescription>Symbolic integration</CardDescription>
           </CardHeader>
           <CardContent>
@@ -281,22 +262,24 @@ export function SymbolicDemo() {
         </CardContent>
       </Card>
 
-      {/* Operation Steps */}
+      {/* Implementation Status */}
       <Card variant="default" padding="md">
         <CardHeader>
-          <CardTitle>Symbolic Operations</CardTitle>
-          <CardDescription>Step-by-step computation details</CardDescription>
+          <CardTitle>Implementation Status</CardTitle>
+          <CardDescription>Current and planned features</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {[
-              { op: 'Parse', detail: `Expression "${demos[selectedDemo].expression}" parsed into AST` },
-              { op: 'Differentiate', detail: `Applied d/dx to obtain ${demos[selectedDemo].derivative}` },
-              { op: 'Simplify', detail: `Applied algebraic simplification: ${demos[selectedDemo].simplified}` },
-              { op: 'Integrate', detail: `Indefinite integral computed: ${demos[selectedDemo].integrated}` },
+              { op: 'Symbolic Expressions', detail: 'Basic symbolic expression representation', status: '✅' },
+              { op: 'Pattern Matching', detail: 'Pattern-based simplification rules', status: '⚠️ 50%' },
+              { op: 'Differentiation', detail: 'Symbolic derivative computation', status: '❌ Planned' },
+              { op: 'Integration', detail: 'Symbolic integration', status: '❌ Planned' },
+              { op: 'Equation Solving', detail: 'Symbolic equation solver', status: '❌ Planned' },
             ].map((step, idx) => (
               <div key={idx} className="flex items-center gap-4 p-3 bg-surface-dark-overlay rounded-lg">
-                <Badge variant={idx === 2 ? 'success' : 'default'}>{step.op}</Badge>
+                <span className="text-lg">{step.status}</span>
+                <Badge variant="default">{step.op}</Badge>
                 <span className="text-sm text-content-dark-secondary">{step.detail}</span>
               </div>
             ))}
@@ -327,7 +310,7 @@ export function SymbolicDemo() {
 
       <DemoContainer
         title="Symbolic Computation"
-        description="Computer algebra system with differentiation, simplification, and equation solving"
+        description="Computer algebra system with pattern matching (30% implemented)"
         code={sampleCode}
         language="fortran"
         onRun={runComputation}

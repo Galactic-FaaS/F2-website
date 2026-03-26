@@ -12,7 +12,6 @@ import {
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  ReferenceLine,
   Cell 
 } from 'recharts';
 
@@ -32,52 +31,45 @@ interface PrecisionResult {
 }
 
 const sampleCode = `! Fortran² Advanced Arithmetic Demo
-! Demonstrating multiple precision systems and interval arithmetic
+! Demonstrating IEEE 754, BigInt, BigFloat, Posit, and Interval arithmetic
 
 program arithmetic_demo
-    use std::arithmetic
-    use std::arithmetic::ieee754
-    use std::arithmetic::arbitrary
-    use std::arithmetic::interval
-    use std::arithmetic::posit
-    
     ! IEEE 754 standard precisions
-    real(binary32) :: x_single
-    real(binary64) :: x_double
-    real(binary128) :: x_quad
+    let x16 = 3.14159_binary16      ! Half precision (16-bit)
+    let x32 = 3.14159_binary32      ! Single precision (32-bit)
+    let x64 = 3.14159_binary64      ! Double precision (64-bit)
+    let xd64 = 3.14159_decimal64    ! Decimal floating point
     
-    ! Arbitrary precision (100 decimal digits)
-    real(arbitrary(precision=100)) :: x_arb, pi_arb
+    ! Arbitrary precision integers (BigInt)
+    let big = BigInt("123456789012345678901234567890")
+    let result = big * big * big    ! No overflow!
+    
+    ! Arbitrary precision floats (BigFloat)
+    let pi = BigFloat("3.141592653589793238462643383279")
+    pi.set_precision(1000)          ! 1000 bits of precision
+    
+    ! Posit arithmetic (8, 16, 32, 64-bit)
+    let p8 = posit8(3.14)
+    let p16 = posit16(3.14159)
+    let p32 = posit32(3.14159265)
+    let p64 = posit64(3.14159265358979)
+    
+    ! Quire accumulator for exact dot products
+    let quire = quire32()
+    quire.add(p32 * p32)
     
     ! Interval arithmetic for guaranteed bounds
-    type(interval(binary64)) :: x_int, result_int
+    let x_int = Interval(1.0, 1.1)  ! x ∈ [1.0, 1.1]
+    let result_int = x_int ** 2     ! result ∈ [1.0, 1.21]
     
-    ! Posit arithmetic (alternative to IEEE 754)
-    real(posit32) :: x_posit
-    
-    ! Initialize values
-    x_single = 3.14159265
-    x_double = 3.141592653589793
-    x_quad = 3.141592653589793238462643383279502884197
-    
-    ! Arbitrary precision computation
-    x_arb = arbitrary_from_string("3.14159265358979323846264338327950288419716939937510")
-    pi_arb = compute_pi(precision=100)
-    
-    ! Interval arithmetic: x ∈ [1.0, 1.1]
-    x_int = interval(1.0, 1.1)
-    result_int = x_int ** 2  ! Guaranteed: result ∈ [1.0, 1.21]
-    
-    ! Posit arithmetic
-    x_posit = posit32_from_double(3.14159)
-    
-    ! Print precision comparison
-    print *, "Single precision: ", x_single
-    print *, "Double precision: ", x_double
-    print *, "Quad precision: ", x_quad
-    print *, "Arbitrary (100 digits): ", x_arb
-    print *, "Interval result: ", result_int
-    print *, "Posit value: ", x_posit
+    ! Print results
+    print("Binary16: {x16}")
+    print("Binary32: {x32}")
+    print("Binary64: {x64}")
+    print("BigInt: {result}")
+    print("BigFloat (1000 bits): {pi}")
+    print("Posit32: {p32}")
+    print("Interval: {result_int}")
     
 end program arithmetic_demo`;
 
@@ -191,29 +183,29 @@ export function ArithmeticDemo() {
         </CardContent>
       </Card>
 
-      {/* Dual Numbers Demo */}
+      {/* Posit Arithmetic Demo */}
       <Card variant="default" padding="md">
         <CardHeader>
-          <CardTitle className="text-brand-green">Dual Numbers</CardTitle>
-          <CardDescription>Automatic differentiation for gradient computation</CardDescription>
+          <CardTitle className="text-brand-green">Posit Arithmetic</CardTitle>
+          <CardDescription>Alternative to IEEE 754 with quire accumulators</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="bg-surface-dark-overlay rounded-lg p-4 font-mono text-sm">
-            <p className="text-content-dark-secondary mb-2">Computing f(x) = x² at x = 1.0:</p>
+            <p className="text-content-dark-secondary mb-2">Exact dot product with quire accumulator:</p>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Input</p>
-                <p className="text-brand-cyan text-lg">x = 1.0 + 1.0ε</p>
+                <p className="text-content-dark-tertiary">Posit32 Values</p>
+                <p className="text-brand-cyan text-lg">p₁ = 3.14, p₂ = 2.71</p>
               </div>
               <div className="text-2xl text-content-dark-tertiary">→</div>
               <div className="flex-1">
-                <p className="text-content-dark-tertiary">Output</p>
-                <p className="text-brand-green text-lg">f(x) = 1.0 + 2.0ε</p>
+                <p className="text-content-dark-tertiary">Quire Accumulation</p>
+                <p className="text-brand-green text-lg">quire.add(p₁ * p₂)</p>
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-border-dark">
               <p className="text-content-dark-tertiary">
-                The ε coefficient (2.0) is exactly the derivative f'(x) = 2x at x = 1.0
+                Quire accumulators provide exact dot products without rounding errors
               </p>
             </div>
           </div>
@@ -225,7 +217,7 @@ export function ArithmeticDemo() {
   return (
     <DemoContainer
       title="Advanced Arithmetic Systems"
-      description="Explore Fortran²'s arbitrary precision, interval arithmetic, and dual number capabilities"
+      description="Explore Fortran²'s IEEE 754, BigInt, BigFloat, Posit, and Interval arithmetic capabilities"
       code={sampleCode}
       language="fortran"
       onRun={runComputation}
