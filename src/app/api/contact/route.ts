@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { contactDbOperations } from '@/lib/contact-db';
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,20 +104,21 @@ export async function POST(request: NextRequest) {
       ip,
     };
 
-    // Store submission (mock - in production, save to database)
-    contactSubmissions.push(submission);
+    // Store submission in database
+    const savedSubmission = contactDbOperations.create({
+      name: submission.name,
+      email: submission.email,
+      message: submission.message,
+      ip,
+      userAgent: request.headers.get('user-agent'),
+    });
 
-    // In production, you would:
-    // 1. Send notification email to team
-    // 2. Store in CRM or helpdesk system
-    // 3. Trigger auto-response email to user
-
-    console.log('Contact form submission:', submission);
+    console.log('Contact form submission:', savedSubmission);
 
     return NextResponse.json({
       success: true,
       message: 'Thank you for your message! We will get back to you soon.',
-      id: submission.id,
+      id: savedSubmission.id,
     });
   } catch (error) {
     console.error('Contact API error:', error);

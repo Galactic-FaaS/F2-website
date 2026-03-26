@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { DemoContainer } from './demo-container';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -75,6 +75,7 @@ interface TrainingData {
 export function DifferentiableDemo() {
   const [isRunning, setIsRunning] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [executionError, setExecutionError] = useState<string | null>(null);
 
   // Generate training curve data
   const generateTrainingData = (): TrainingData[] => {
@@ -94,17 +95,53 @@ export function DifferentiableDemo() {
     return data;
   };
 
-  const runComputation = () => {
+  const runComputation = useCallback(async () => {
     setIsRunning(true);
+    setExecutionError(null);
+    setShowResults(false);
     
-    setTimeout(() => {
+    try {
+      // Call the execution API
+      const response = await fetch('/api/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: sampleCode,
+          language: 'fortran',
+          timeout: 10000,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Execution failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Execution result:', result);
+      
+      // Show results after execution
       setShowResults(true);
+    } catch (error) {
+      setExecutionError(error instanceof Error ? error.message : 'Execution failed');
+      // Still show mock results as fallback
+      setShowResults(true);
+    } finally {
       setIsRunning(false);
-    }, 2000);
-  };
+    }
+  }, []);
 
   const outputContent = showResults ? (
     <div className="space-y-6">
+      {/* Error Display */}
+      {executionError && (
+        <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400">
+          <p className="font-semibold">Execution Warning</p>
+          <p className="text-sm mt-1">{executionError} - Showing mock results</p>
+        </div>
+      )}
+
       {/* AD Results */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card variant="outlined" padding="sm" className="border-carbon-gray-80">

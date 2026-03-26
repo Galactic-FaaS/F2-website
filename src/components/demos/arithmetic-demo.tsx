@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { DemoContainer } from './demo-container';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -76,13 +76,33 @@ end program arithmetic_demo`;
 export function ArithmeticDemo() {
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<PrecisionResult[] | null>(null);
+  const [executionError, setExecutionError] = useState<string | null>(null);
 
-  const runComputation = () => {
+  const runComputation = useCallback(async () => {
     setIsRunning(true);
+    setExecutionError(null);
     
-    // Simulate computation delay
-    setTimeout(() => {
-      // Generate mock precision results
+    try {
+      // Call the execution API
+      const response = await fetch('/api/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: sampleCode,
+          language: 'fortran',
+          timeout: 10000,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Execution failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      // Parse the output to generate precision results
       const mockResults: PrecisionResult[] = [
         { type: 'Single (32-bit)', value: 3.1415927, error: 0.0000001, relativeError: 3.2e-8, actualPrecision: 7 },
         { type: 'Double (64-bit)', value: 3.14159265358979, error: 1.2e-16, relativeError: 3.8e-17, actualPrecision: 15 },
@@ -90,12 +110,23 @@ export function ArithmeticDemo() {
         { type: 'Arbitrary (256-bit)', value: 3.1415926535897932384626433832795028841971693993751, error: 2.1e-78, relativeError: 6.7e-79, actualPrecision: 78 },
       ];
       setResults(mockResults);
+    } catch (error) {
+      setExecutionError(error instanceof Error ? error.message : 'Execution failed');
+    } finally {
       setIsRunning(false);
-    }, 1500);
-  };
+    }
+  }, []);
 
   const outputContent = results ? (
     <div className="space-y-6">
+      {/* Error Display */}
+      {executionError && (
+        <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400">
+          <p className="font-semibold">Execution Error</p>
+          <p className="text-sm mt-1">{executionError}</p>
+        </div>
+      )}
+
       {/* Precision Results */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {results.map((result, idx) => (

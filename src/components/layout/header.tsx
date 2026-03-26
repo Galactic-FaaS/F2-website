@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { SearchModal, SearchTrigger } from '@/components/ui/search';
 import { useTheme } from '@/components/providers/theme-provider';
-import { Menu, X, Sun, Moon, Github } from 'lucide-react';
+import { useAuth, signInWithGitHub, signOutUser } from '@/lib/auth-client';
+import { Menu, X, Sun, Moon, Github, LogIn, LogOut, User } from 'lucide-react';
 import { MobileNav } from './mobile-nav';
 
 const navigation = [
@@ -23,6 +24,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
+  const { session, isAuthenticated, isLoading } = useAuth();
 
   // Handle Cmd+K / Ctrl+K keyboard shortcut
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -110,6 +112,44 @@ export function Header() {
                   <Moon className="h-4 w-4" />
                 )}
               </Button>
+              {isAuthenticated && session?.user ? (
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 px-2 py-1">
+                    {session.user.avatar ? (
+                      <img
+                        src={session.user.avatar}
+                        alt={session.user.name || session.user.username}
+                        className="h-6 w-6 rounded-full"
+                      />
+                    ) : (
+                      <div className="h-6 w-6 rounded-full bg-accent-cyan/20 flex items-center justify-center">
+                        <User className="h-4 w-4 text-accent-cyan" />
+                      </div>
+                    )}
+                    <span className="text-sm text-carbon-gray-30 hidden lg:inline">
+                      {session.user.name || session.user.username}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => signOutUser()}
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => signInWithGitHub()}
+                  disabled={isLoading}
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  <span className="hidden lg:inline">Sign In</span>
+                </Button>
+              )}
               <Button size="sm" variant="primary">
                 Get Started
               </Button>

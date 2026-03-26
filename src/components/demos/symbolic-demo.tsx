@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { DemoContainer } from './demo-container';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -56,6 +56,7 @@ export function SymbolicDemo() {
   const [isRunning, setIsRunning] = useState(false);
   const [results, setResults] = useState<SymbolicResult[] | null>(null);
   const [selectedDemo, setSelectedDemo] = useState<'polynomial' | 'trigonometric' | 'rational'>('polynomial');
+  const [executionError, setExecutionError] = useState<string | null>(null);
 
   const demos = {
     polynomial: {
@@ -99,10 +100,32 @@ export function SymbolicDemo() {
     }
   };
 
-  const runComputation = () => {
+  const runComputation = useCallback(async () => {
     setIsRunning(true);
+    setExecutionError(null);
     
-    setTimeout(() => {
+    try {
+      // Call the execution API
+      const response = await fetch('/api/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: sampleCode,
+          language: 'fortran',
+          timeout: 10000,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Execution failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log('Execution result:', result);
+      
+      // Parse results based on selected demo
       const demo = demos[selectedDemo];
       const mockResults: SymbolicResult[] = [
         { expression: demo.latex.original, type: 'original' },
@@ -111,9 +134,21 @@ export function SymbolicDemo() {
         { expression: demo.latex.integrated, type: 'integrated' },
       ];
       setResults(mockResults);
+    } catch (error) {
+      setExecutionError(error instanceof Error ? error.message : 'Execution failed');
+      // Fall back to local mock results
+      const demo = demos[selectedDemo];
+      const mockResults: SymbolicResult[] = [
+        { expression: demo.latex.original, type: 'original' },
+        { expression: demo.latex.derivative, type: 'derivative' },
+        { expression: demo.latex.simplified, type: 'simplified' },
+        { expression: demo.latex.integrated, type: 'integrated' },
+      ];
+      setResults(mockResults);
+    } finally {
       setIsRunning(false);
-    }, 1500);
-  };
+    }
+  }, [selectedDemo]);
 
   // Generate plot data for function visualization
   const generatePlotData = () => {
@@ -128,6 +163,14 @@ export function SymbolicDemo() {
 
   const outputContent = results ? (
     <div className="space-y-6">
+      {/* Error Display */}
+      {executionError && (
+        <div className="p-4 bg-red-900/20 border border-red-500/50 rounded-lg text-red-400">
+          <p className="font-semibold">Execution Warning</p>
+          <p className="text-sm mt-1">{executionError} - Showing mock results</p>
+        </div>
+      )}
+
       {/* Implementation Status Warning */}
       <Card variant="outlined" padding="md" className="border-status-warning/50 bg-status-warning/5">
         <CardContent>

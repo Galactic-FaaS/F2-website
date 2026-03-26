@@ -13,14 +13,17 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.28",
     "katex": "^0.16.38",
     "lucide-react": "^0.436.0",
     "next": "14.2.5",
+    "next-auth": "^4.24.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-resizable-panels": "^4.7.6",
     "recharts": "^3.8.0",
     "tailwind-merge": "^2.4.0"
   },

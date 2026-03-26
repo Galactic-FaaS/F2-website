@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { emailService } from '@/lib/email-service';
+import { config } from '@/lib/config';
 
 // Email validation regex
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -82,17 +84,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Add to subscribers (mock - in production, save to database)
+    // Add to subscribers
     subscribers.add(normalizedEmail);
 
-    // In production, you would:
-    // 1. Send confirmation email
-    // 2. Add to email service (Mailchimp, SendGrid, etc.)
-    // 3. Store in database for analytics
+    // Send to email service
+    const result = await emailService.subscribe(normalizedEmail);
+
+    if (!result.success) {
+      // Rollback the subscriber if email service failed
+      subscribers.delete(normalizedEmail);
+      
+      // Check specific error types
+      if (result.error === 'EMAIL_ALREADY_SUBSCRIBED') {
+        return NextResponse.json(
+          { error: 'Email already subscribed' },
+          { status: 409 }
+        );
+      }
+      
+      return NextResponse.json(
+        { error: result.message || 'Failed to subscribe' },
+        { status: 500 }
+      );
+    }
+
+    // Log in development mode
+    if (config.isDevelopment) {
+      console.log(`[Newsletter] New subscriber: ${normalizedEmail}`);
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'Successfully subscribed to newsletter',
+      message: result.message,
     });
   } catch (error) {
     console.error('Newsletter API error:', error);

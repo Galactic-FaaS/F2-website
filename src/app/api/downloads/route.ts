@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { githubApi } from '@/lib/github-api';
+import { config } from '@/lib/config';
 
-// Mock download data - in production, this would come from a database or GitHub releases
-const downloads = {
+// Mock download data - used as fallback when GitHub API is unavailable
+const mockDownloads = {
   versions: [
     {
       version: '3.0.2',
@@ -134,9 +136,25 @@ export async function GET(request: NextRequest) {
     const platform = searchParams.get('platform');
     const arch = searchParams.get('arch');
 
+    // Try to fetch from GitHub API
+    let releases: Awaited<ReturnType<typeof githubApi.getReleases>> = [];
+    let useGitHub = false;
+
+    try {
+      releases = await githubApi.getReleases();
+      useGitHub = true;
+
+      if (config.isDevelopment) {
+        console.log('[Downloads] Using GitHub API data');
+      }
+    } catch (error) {
+      console.warn('[Downloads] GitHub API unavailable, using fallback data:', error);
+      releases = mockDownloads.versions;
+    }
+
     // Return specific version if requested
     if (version) {
-      const foundVersion = downloads.versions.find((v) => v.version === version);
+      const foundVersion = releases.find((v) => v.version === version);
       if (!foundVersion) {
         return NextResponse.json(
           { error: 'Version not found' },
@@ -148,7 +166,15 @@ export async function GET(request: NextRequest) {
 
     // Return download URLs for specific platform/arch
     if (platform && arch) {
-      const latestVersion = downloads.versions[0];
+      const latestVersion = releases[0];
+      
+      if (!latestVersion) {
+        return NextResponse.json(
+          { error: 'No releases available' },
+          { status: 404 }
+        );
+      }
+
       const platformDownloads = latestVersion.downloads[platform as keyof typeof latestVersion.downloads];
       
       if (!platformDownloads) {
@@ -170,12 +196,22 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         version: latestVersion.version,
         url: downloadUrl,
-        checksum: latestVersion.checksum[`${platform}_${arch}` as keyof typeof latestVersion.checksum],
+        checksum: latestVersion.checksum[`${platform}_${arch}`],
       });
     }
 
-    // Return all versions
-    return NextResponse.json(downloads);
+    // Return all versions with metadata
+    const response = {
+      versions: releases,
+      latestVersion: releases[0]?.version || mockDownloads.latestVersion,
+      upcomingFeatures: mockDownloads.upcomingFeatures,
+      _meta: {
+        source: useGitHub ? 'github' : 'fallback',
+        fetchedAt: new Date().toISOString(),
+      },
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Downloads API error:', error);
     return NextResponse.json(
