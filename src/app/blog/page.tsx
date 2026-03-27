@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ShareButtonCompact } from '@/components/ui/share-button';
 import { 
   FileText, 
   Calendar, 
@@ -17,6 +18,7 @@ import {
   Zap,
   BookOpen
 } from 'lucide-react';
+import { getBlogPostShareUrl } from '@/lib/share';
 
 interface BlogPost {
   slug: string;
@@ -222,6 +224,15 @@ export default function BlogPage() {
                       </div>
                       <ArrowRight className="h-5 w-5 text-carbon-blue-40 group-hover:translate-x-1 transition-transform" />
                     </div>
+                    <div className="mt-4 pt-4 border-t border-carbon-gray-80">
+                      <ShareButtonCompact
+                        data={{
+                          url: getBlogPostShareUrl(featuredPost.slug),
+                          title: featuredPost.title,
+                          description: featuredPost.excerpt,
+                        }}
+                      />
+                    </div>
                   </CardContent>
                 </div>
               </Card>
@@ -281,6 +292,15 @@ export default function BlogPage() {
                           day: 'numeric',
                         })}
                       </time>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-carbon-gray-80">
+                      <ShareButtonCompact
+                        data={{
+                          url: getBlogPostShareUrl(post.slug),
+                          title: post.title,
+                          description: post.excerpt,
+                        }}
+                      />
                     </div>
                   </CardContent>
                 </Card>

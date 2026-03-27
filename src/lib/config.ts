@@ -33,6 +33,21 @@ export interface EnvConfig {
   executionTimeout: number;
   maxExecutionTime: number;
   remoteExecutorUrl: string | null;
+
+  // PWA Config
+  pwaEnabled: boolean;
+  pwaCacheName: string;
+  pwaCacheVersion: string;
+
+  // Social Sharing Config
+  socialSharingEnabled: boolean;
+  twitterHandle: string | null;
+  siteUrl: string;
+
+  // Contributors Dashboard Config
+  contributorsEnabled: boolean;
+  githubRepo: string;
+  contributorsCacheTtl: number;
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -166,6 +181,46 @@ export const config: EnvConfig = {
   get remoteExecutorUrl() {
     return executorConfig.remoteExecutorUrl;
   },
+
+  // PWA Config
+  get pwaEnabled() {
+    return getEnv('NEXT_PUBLIC_PWA_ENABLED') !== 'false';
+  },
+
+  get pwaCacheName() {
+    return getEnv('NEXT_PUBLIC_PWA_CACHE_NAME') || 'fortran2-cache';
+  },
+
+  get pwaCacheVersion() {
+    return getEnv('NEXT_PUBLIC_PWA_CACHE_VERSION') || 'v1';
+  },
+
+  // Social Sharing Config
+  get socialSharingEnabled() {
+    return getEnv('NEXT_PUBLIC_SOCIAL_SHARING_ENABLED') !== 'false';
+  },
+
+  get twitterHandle() {
+    return getEnv('NEXT_PUBLIC_TWITTER_HANDLE') || null;
+  },
+
+  get siteUrl() {
+    return getEnv('NEXT_PUBLIC_SITE_URL') || 'https://fortran2.io';
+  },
+
+  // Contributors Dashboard Config
+  get contributorsEnabled() {
+    return getEnv('NEXT_PUBLIC_CONTRIBUTORS_ENABLED') !== 'false';
+  },
+
+  get githubRepo() {
+    return getEnv('NEXT_PUBLIC_GITHUB_REPO') || 'fortransquared/fortransquared';
+  },
+
+  get contributorsCacheTtl() {
+    const ttl = parseInt(getEnv('CONTRIBUTORS_CACHE_TTL') || '3600', 10);
+    return Math.min(Math.max(ttl, 300), 86400); // Between 5 minutes and 24 hours
+  },
 };
 
 /**
@@ -236,5 +291,45 @@ export function getGitHubApiConfig(): GitHubApiConfig {
     owner: 'fortransquared',
     repo: 'fortransquared',
     baseUrl: 'https://api.github.com',
+  };
+}
+
+/**
+ * PWA configuration
+ */
+export interface PWAConfig {
+  enabled: boolean;
+  cacheName: string;
+  cacheVersion: string;
+}
+
+/**
+ * Get the PWA configuration
+ */
+export function getPWAConfig(): PWAConfig {
+  return {
+    enabled: config.pwaEnabled,
+    cacheName: config.pwaCacheName,
+    cacheVersion: config.pwaCacheVersion,
+  };
+}
+
+/**
+ * Contributors Dashboard configuration
+ */
+export interface ContributorsConfig {
+  enabled: boolean;
+  githubRepo: string;
+  cacheTtl: number;
+}
+
+/**
+ * Get the Contributors Dashboard configuration
+ */
+export function getContributorsConfig(): ContributorsConfig {
+  return {
+    enabled: config.contributorsEnabled,
+    githubRepo: config.githubRepo,
+    cacheTtl: config.contributorsCacheTtl,
   };
 }

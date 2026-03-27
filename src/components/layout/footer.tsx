@@ -29,6 +29,7 @@ const footerLinks = {
       { name: 'GitHub', href: 'https://github.com/fortran-lang' },
       { name: 'Discord', href: '/community/discord' },
       { name: 'Contribute', href: '/contribute' },
+      { name: 'Contributors', href: '/contributors' },
     ],
   },
   legal: {

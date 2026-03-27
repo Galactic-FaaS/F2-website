@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   description: 'Fortran² is a cutting-edge multi-paradigm programming language for computational science, featuring advanced arithmetic, differentiable programming, symbolic computation, and probabilistic programming.',
   keywords: ['Fortran', 'programming language', 'computational science', 'high performance computing', 'scientific computing', 'numerical computing'],
   authors: [{ name: 'Fortran² Team' }],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Fortran²',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -113,10 +119,34 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#161616" />
+        <meta name="theme-color" content="#00D4FF" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Fortran²" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Fortran²" />
+        <meta name="msapplication-TileColor" content="#0A0E17" />
+        <meta name="msapplication-tap-highlight" content="no" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                      console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(function(error) {
+                      console.log('Service Worker registration failed:', error);
+                    });
+                });
+              }
+            `,
+          }}
         />
       </head>
       <body className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} font-sans min-h-screen bg-carbon-gray-100 text-carbon-gray-10 antialiased`}>

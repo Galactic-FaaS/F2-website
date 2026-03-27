@@ -19,6 +19,7 @@ const navigation = [
   { name: 'Documentation', href: '/docs' },
   { name: 'Downloads', href: '/downloads' },
   { name: 'Community', href: '/community' },
+  { name: 'Contributors', href: '/contributors' },
 ];
 
 export function MobileNav({ open, onClose }: MobileNavProps) {

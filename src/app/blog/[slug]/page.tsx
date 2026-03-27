@@ -6,7 +6,9 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ShareButtonFull } from '@/components/ui/share-button';
 import { ArrowLeft, Calendar, User, Clock } from 'lucide-react';
+import { getBlogPostShareUrl } from '@/lib/share';
 
 interface BlogPost {
   slug: string;
@@ -425,6 +427,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 ))}
               </div>
             )}
+
+            {/* Share Buttons */}
+            <div className="mb-8 p-4 rounded-lg bg-surface-dark border border-border-dark">
+              <ShareButtonFull
+                data={{
+                  url: getBlogPostShareUrl(slug),
+                  title: post.title,
+                  description: post.excerpt,
+                  hashtags: post.tags,
+                }}
+              />
+            </div>
 
             {/* Content */}
             <div className="prose prose-invert prose-cyan max-w-none">
