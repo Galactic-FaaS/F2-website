@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { AuthProvider } from '@/components/providers/auth-provider';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { Analytics } from '@/components/analytics';
 import './globals.css';
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -134,6 +135,7 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
+            <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>

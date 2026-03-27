@@ -21,6 +21,8 @@ export interface EnvConfig {
   
   // Analytics
   analyticsId: string | null;
+  vercelAnalytics: boolean;
+  analyticsEnabled: boolean;
   
   // App Config
   isDevelopment: boolean;
@@ -126,7 +128,17 @@ export const config: EnvConfig = {
   
   // Analytics
   get analyticsId() {
-    return getEnv('ANALYTICS_ID') || null;
+    return getEnv('NEXT_PUBLIC_ANALYTICS_ID') || null;
+  },
+  
+  get vercelAnalytics() {
+    return getEnv('NEXT_PUBLIC_VERCEL_ANALYTICS') === 'true';
+  },
+  
+  get analyticsEnabled() {
+    // Default to true in production, false in development
+    const defaultValue = process.env.NODE_ENV === 'production' ? 'true' : 'false';
+    return getEnv('NEXT_PUBLIC_ANALYTICS_ENABLED') !== 'false';
   },
   
   // App Config
